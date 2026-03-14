@@ -50,9 +50,9 @@ export const signUp = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
-      return res.status(201).json({
+        return res.status(201).json({
             success: true,
-            message:"User signup successfully",
+            message: "User signup successfully",
             user
         });
 
@@ -66,3 +66,85 @@ export const signUp = async (req, res) => {
 
     }
 };
+
+export const signIn = async (req, res) => {
+    try {
+
+        const { userName, password } = req.body;
+
+        if (!userName || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "All fields are required."
+            });
+        }
+
+        const user = await User.findOne({ userName });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "Incorrect Username or Password"
+            });
+        }
+
+        const comparePassword = await bcrypt.compare(password, user.password);
+
+        if (!comparePassword) {
+            return res.status(401).json({
+                success: false,
+                message: "Incorrect Username or Password"
+            });
+        }
+
+        const token = genToken(user._id);
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "Strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "User signIn successfully",
+            user
+        });
+
+    } catch (error) {
+
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message
+        });
+
+    }
+};
+
+export const signOut = async (req, res) => {
+    try {
+
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: false,
+            sameSite: "Strict"
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Sign Out successfully"
+        });
+
+    } catch (error) {
+
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+            error: error.message
+        });
+
+    }
+};
+

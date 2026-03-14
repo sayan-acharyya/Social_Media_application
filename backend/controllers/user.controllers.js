@@ -1,0 +1,20 @@
+import User from "../models/user.model.js";
+
+
+export const getCurrentUser = async (req, res) => {
+    try {
+        const userId = req.userId;
+
+        const user = await User.findById(userId);
+
+        return res.status(200).json({
+            success: true,
+            user
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: `error in getCurrentUser ${error}`
+        })
+    }
+}
