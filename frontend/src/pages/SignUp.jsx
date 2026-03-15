@@ -3,9 +3,13 @@ import logo from "../assets/image5.png"
 import logo1 from "../assets/image4.png"
 import logo2 from "../assets/image1.png"
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { MdOutlineRemoveRedEye } from "react-icons/md";//open
 import { IoEyeOffOutline } from "react-icons/io5";//close
+import axios from "axios"
+import { serverUrl } from '../App'
+import toast from 'react-hot-toast'
+import { ClipLoader } from "react-spinners";
 
 const SignUp = () => {
     const [inputClick, setInputClick] = useState({
@@ -15,6 +19,29 @@ const SignUp = () => {
         password: false
     })
     const [showPassword, setShowPassword] = useState(false);
+    const [loadiing, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const [name, setName] = useState("");
+    const [userName, setUserName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSignup = async () => {
+        setLoading(true);
+        try {
+            const res = await axios.post(`${serverUrl}/auth/signup`,
+                { name, userName, email, password }, { withCredentials: true });
+            toast.success(res.data.message || "Signup Successfully");
+            navigate("/signin");
+            setLoading(false);
+        } catch (error) {
+            toast.error(
+                error.response?.data?.message || "Signup failed ❌"
+
+            );
+            setLoading(false);
+        }
+    }
 
     return (
         <div className='w-full h-screen bg-gradient-to-b 
@@ -44,6 +71,8 @@ const SignUp = () => {
 
                         <input
                             id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             required
                             type="text"
                             onBlur={(e) =>
@@ -69,6 +98,8 @@ const SignUp = () => {
                         <input
                             id="userName"
                             type="text"
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
                             required
                             onBlur={(e) =>
                                 setInputClick({ ...inputClick, userName: e.target.value !== "" })
@@ -93,6 +124,8 @@ const SignUp = () => {
                         <input
                             id="email"
                             required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             type="email"
                             onBlur={(e) =>
                                 setInputClick({ ...inputClick, email: e.target.value !== "" })
@@ -118,6 +151,8 @@ const SignUp = () => {
                         <input
                             id="password"
                             required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             type={showPassword ? "text" : "password"}
                             onBlur={(e) =>
                                 setInputClick({ ...inputClick, password: e.target.value !== "" })
@@ -136,9 +171,16 @@ const SignUp = () => {
 
                     {/* Signup Button */}
                     <button
+                        onClick={handleSignup}
                         className="w-[90%] h-[50px] bg-gradient-to-r from-yellow-500 to-pink-600   text-white font-semibold rounded-xl transition hover:opacity-90"
                     >
-                        Create Account
+                        {loadiing ? (<ClipLoader
+                            color="#ffffff"
+                            loading={loadiing}
+                            size={22}
+                            aria-label="Loading Spinner"
+                            data-testid="loader"
+                        />) : "Create Account"}
                     </button>
 
                     {/* Login Redirect */}
@@ -183,4 +225,3 @@ shadow-2xl shadow-black px-10 text-center gap-8">
 
 export default SignUp;
 
-//2:35:10
