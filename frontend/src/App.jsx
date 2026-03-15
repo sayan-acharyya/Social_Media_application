@@ -4,6 +4,9 @@ import SignUp from './pages/SignUp.jsx'
 import SignIn from './pages/SignIn'
 import { Toaster } from "react-hot-toast";
 import PublicRoute from './components/PublicRoute.jsx';
+import Home from './pages/Home.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
 
 export const serverUrl = "http://localhost:8000/api"
 const App = () => {
@@ -25,6 +28,22 @@ const App = () => {
               <SignIn />
             </PublicRoute>
           } />
+        <Route
+          path='/forgot-password'
+          element={
+            <PublicRoute>
+              <ForgotPassword />
+            </PublicRoute>
+          } />
+
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
       </Routes>
       <Toaster
         position="top-right"

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { serverUrl } from "../App";
 
-const PublicRoute = ({ children }) => {
+const PrivateRoute = ({ children }) => {
 
   const [loading, setLoading] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
@@ -35,11 +35,13 @@ const PublicRoute = ({ children }) => {
 
   if (loading) return null;
 
-  if (isAuth) {
-    return <Navigate to="/" replace />;
-  } 
+  // ❌ Not logged in → go to signin
+  if (!isAuth) {
+    return <Navigate to="/signin" replace />;
+  }
 
+  // ✅ Logged in → allow access
   return children;
 };
 
-export default PublicRoute;
+export default PrivateRoute;

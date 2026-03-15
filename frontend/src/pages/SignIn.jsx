@@ -75,7 +75,7 @@ shadow-2xl shadow-black px-10 text-center gap-8">
         </div>
 
 
-        <div className="w-full lg:w-[50%] h-full bg-white flex flex-col items-center p-6 gap-6">
+        <div className="w-full lg:w-[50%] h-full bg-white flex flex-col justify-center items-center p-6 gap-6">
 
           {/* Title */}
           <div className="flex items-center gap-2 text-2xl font-semibold mt-8">
@@ -147,6 +147,14 @@ shadow-2xl shadow-black px-10 text-center gap-8">
               {showPassword ? <IoEyeOffOutline /> : <MdOutlineRemoveRedEye />}
             </div>
           </div>
+          <div className="w-[90%] flex justify-end -mt-3 cursor-pointer">
+            <Link
+              to="/forgot-password"
+              className="text-sm text-blue-500 hover:underline cursor-pointer"
+            >
+              Forgot Password?
+            </Link>
+          </div>
 
           {/* Signup Button */}
           <button
@@ -180,6 +188,6 @@ shadow-2xl shadow-black px-10 text-center gap-8">
 }
 
 export default SignIn;
-//2:48:02
+
 
 
