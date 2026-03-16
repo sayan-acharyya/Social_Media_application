@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiLoader } from "react-icons/fi";
 import { ClipLoader } from 'react-spinners';
-
+import axios from "axios"
+import { serverUrl } from '../App';
+import toast from 'react-hot-toast';
 
 const ForgotPassword = () => {
 
@@ -16,6 +18,68 @@ const ForgotPassword = () => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const handleStep1 = async () => {
+        setLoading(true);
+        try {
+            const result = await axios.post(`${serverUrl}/auth/sendOtp`, { email }, { withCredentials: true });
+            setStep(2);
+            toast.success(result.data.message || "OTP sended to your email.");
+            setLoading(false)
+        } catch (error) {
+            toast.error(error.response.data.message);
+            setLoading(false)
+        }
+    }
+
+    const handleStep2 = async () => {
+        setLoading(true);
+        try {
+            const result = await axios.post(`${serverUrl}/auth/verifyOtp`, { email, otp }, { withCredentials: true });
+            setStep(3);
+            toast.success(result.data.message || "OTP verified successfully.");
+            setLoading(false);
+        } catch (error) {
+            toast.error(error.response.data.message);
+            setLoading(false);
+        }
+    }
+
+    const handleStep3 = async () => {
+        setLoading(true);
+
+        try {
+
+            if (newPassword.length < 6) {
+                toast.error("Password must be at least 6 characters");
+                setLoading(false);
+                return;
+            }
+
+
+            if (newPassword !== confirmPassword) {
+                toast.error("Password and Confirm Password do not match");
+                setLoading(false);
+                return; // stop execution here
+            }
+
+            const result = await axios.post(
+                `${serverUrl}/auth/resetPassword`,
+                { email, newPassword },
+                { withCredentials: true }
+            );
+
+            toast.success(result.data.message || "Password reset successfully.");
+            navigate("/signin");
+
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "Something went wrong");
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
         <div className='w-full h-screen bg-gradient-to-b 
@@ -62,6 +126,7 @@ const ForgotPassword = () => {
                     </div>
                     {/* Button */}
                     <button
+                        onClick={handleStep1}
                         className="w-[90%] h-[45px] bg-gradient-to-r from-yellow-500 to-pink-600 text-white font-semibold rounded-xl hover:opacity-90"
                     >
                         {loading ? <div className="w-full flex justify-center items-center">
@@ -77,7 +142,7 @@ const ForgotPassword = () => {
         rounded-2xl flex justify-center items-center flex-col border-2 border-[#1a1f23] gap-6 p-6'>
 
                     <h2 className='text-[28px] font-semibold'>
-                       Verify OTP
+                        Verify OTP
                     </h2>
 
                     {/* otp Input */}
@@ -106,6 +171,7 @@ const ForgotPassword = () => {
 
                     {/* Button */}
                     <button
+                        onClick={handleStep2}
                         className="w-[90%] h-[45px] bg-gradient-to-r from-yellow-500 to-pink-600 text-white font-semibold rounded-xl hover:opacity-90"
                     >
                         {loading ? <div className="w-full flex justify-center items-center">
@@ -174,6 +240,7 @@ const ForgotPassword = () => {
 
                     {/* Button */}
                     <button
+                        onClick={handleStep3}
                         className="w-[90%] h-[45px] bg-gradient-to-r from-yellow-500 to-pink-600 text-white font-semibold rounded-xl hover:opacity-90"
                     >
                         {loading ? (

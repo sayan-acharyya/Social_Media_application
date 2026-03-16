@@ -41,15 +41,7 @@ export const signUp = async (req, res) => {
             email,
             password: hashPassword
         });
-
-        const token = genToken(user._id)
-
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: "Strict",
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        });
+ 
 
         return res.status(201).json({
             success: true,
