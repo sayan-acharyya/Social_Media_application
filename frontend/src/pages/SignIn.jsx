@@ -10,6 +10,8 @@ import axios from "axios"
 import { serverUrl } from '../App'
 import toast from 'react-hot-toast'
 import { ClipLoader } from "react-spinners";
+import { useDispatch } from 'react-redux'
+import { setUserData } from '../redux/slices/userSlice'
 
 const SignIn = () => {
   const [inputClick, setInputClick] = useState({
@@ -26,11 +28,14 @@ const SignIn = () => {
 
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
+
   const handleSignin = async () => {
     setLoading(true);
     try {
       const res = await axios.post(`${serverUrl}/auth/signin`,
         { userName, password }, { withCredentials: true });
+      dispatch(setUserData(res.data))
       toast.success(res.data.message || "Signin Successfully");
       navigate("/");
       setLoading(false);
