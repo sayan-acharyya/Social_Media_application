@@ -38,6 +38,7 @@ const SignIn = () => {
       dispatch(setUserData(res.data))
       toast.success(res.data.message || "Signin Successfully");
       navigate("/");
+      window.location.reload();
       setLoading(false);
     } catch (error) {
       toast.error(

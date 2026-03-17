@@ -1,15 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Routes, Route } from "react-router-dom"
 import SignUp from './pages/SignUp.jsx'
 import SignIn from './pages/SignIn'
 import { Toaster } from "react-hot-toast";
-import PublicRoute from './components/PublicRoute.jsx';
+import PublicRoute from './hooks/PublicRoute.jsx';
 import Home from './pages/Home.jsx';
-import PrivateRoute from './components/PrivateRoute.jsx';
+import PrivateRoute from './hooks/PrivateRoute.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
+import { useDispatch } from 'react-redux';
+import axios from "axios";
+import { setUserData } from './redux/slices/userSlice.js';
+import getCurrentUser from './hooks/getCurrentUser.jsx';
+import getSuggestedusers from './hooks/getSuggestedusers.jsx';
+
 
 export const serverUrl = "http://localhost:8000/api"
+
 const App = () => {
+
+  getCurrentUser();
+  getSuggestedusers();
+
+
   return (
     <>
       <Routes>
@@ -19,22 +31,26 @@ const App = () => {
             <PublicRoute>
               <SignUp />
             </PublicRoute>
+          }
+        />
 
-          } />
         <Route
           path='/signin'
           element={
-            <PublicRoute> 
+            <PublicRoute>
               <SignIn />
             </PublicRoute>
-          } />
+          }
+        />
+
         <Route
           path='/forgot-password'
           element={
             <PublicRoute>
               <ForgotPassword />
             </PublicRoute>
-          } />
+          }
+        />
 
         <Route
           path="/"
@@ -45,6 +61,7 @@ const App = () => {
           }
         />
       </Routes>
+
       <Toaster
         position="top-right"
         toastOptions={{
