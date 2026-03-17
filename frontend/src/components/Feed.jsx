@@ -1,27 +1,47 @@
-import React from 'react'
-import OtherUsers from './OtherUsers'
-import { FiHeart } from 'react-icons/fi'
+import React from "react";
+import { FiHeart } from "react-icons/fi";
 import logo from "../assets/image4.png";
+import StoryDp from "./StoryDp";
+import Nav from "./Nav";
 
 const Feed = () => {
     return (
-        <div className='lg:w-[50%] w-full bg-black min-h-[100vh] 
-    lg:h-[100vh] relative lg:overflow-y-auto'>
-        
-            {/* logo and heart  icon for small devices */}
-            <div className='w-full h-[100px] flex items-center justify-between p-[20px] lg:hidden'>
+        <div className="lg:w-[50%] w-full bg-black h-screen relative overflow-y-auto no-scrollbar">
+
+            {/* logo and heart icon for small devices */}
+            <div className="w-full h-[100px] flex items-center justify-between p-[20px] lg:hidden">
                 <img
-                    className='w-[100px]'
+                    className="w-[100px]"
                     src={logo}
-                    alt=""
+                    alt="logo"
                 />
 
-                <FiHeart className='text-pink-500 w-[25px] h-[25px]' />
+                <FiHeart className="text-pink-500 w-[25px] h-[25px]" />
             </div>
 
+            {/* story section */}
+            <div className="flex w-full overflow-x-auto gap-[20px] items-center p-[20px] no-scrollbar">
+                <StoryDp userName={"vsdvfghmghmgmhgmhgmhgmhgmfdbv"} />
+                <StoryDp userName={"vsdvffdbv"} />
+                <StoryDp userName={"vsdvffdbv"} />
+                <StoryDp userName={"vsdvffdbv"} />
+                <StoryDp userName={"vsdvffdbv"} />
+                <StoryDp userName={"vsdvffdbv"} />
+                <StoryDp userName={"vsdvffdbv"} />
+                <StoryDp userName={"vsdvffdbv"} />
+                <StoryDp userName={"vsdvffdbv"} />
+                <StoryDp userName={"vsdvffdbv"} />
+            </div>
+
+            {/* feed area */}
+            <div className="w-full min-h-[100vh] flex flex-col items-center 
+      gap-[20px] p-[10px] pt-[40px] bg-white rounded-t-[60px] 
+      pb-[120px]">
+                <Nav />
+            </div>
 
         </div>
-    )
-}
+    );
+};
 
-export default Feed
+export default Feed;
