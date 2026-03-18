@@ -1,3 +1,4 @@
+import uploadOnCloudinary from "../Config/cloudinary.js";
 import User from "../models/user.model.js";
 
 
@@ -37,3 +38,86 @@ export const suggestedUsers = async (req, res) => {
         })
     }
 }
+
+export const editProfile = async (req, res) => {
+    try {
+        const { name, userName, bio, profession, gender } = req.body;
+
+        const user = await User.findById(req.userId).select("-password");
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        // Check username only if changed
+        if (userName && userName !== user.userName) {
+            const sameUserWithUserName = await User.findOne({ userName });
+
+            if (sameUserWithUserName) {
+                return res.status(400).json({
+                    success: false,
+                    message: "UserName already exists"
+                });
+            }
+        }
+
+        let profileImage;
+
+        if (req.file) {
+            profileImage = await uploadOnCloudinary(req.file.path);
+        }
+
+        user.name = name || user.name;
+        user.userName = userName || user.userName;
+        user.bio = bio || user.bio;
+        user.profession = profession || user.profession;
+        user.gender = gender || user.gender;
+
+        if (profileImage) {
+            user.profileImage = profileImage;
+        }
+
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Profile updated successfully 🎉",
+            user
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: `error in editProfile ${error}`
+        });
+    }
+};
+
+export const getProfile = async (req, res) => {
+    try {
+        const userName = req.params.userName;
+
+        const user = await User.findOne({ userName }).select("-password");
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            user
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: `error in getProfile ${error}`
+        });
+    }
+};

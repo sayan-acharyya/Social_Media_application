@@ -7,7 +7,7 @@ import { serverUrl } from '../App';
 import toast from 'react-hot-toast';
 import { setUserData } from '../redux/slices/userSlice';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import OtherUsers from './OtherUsers';
 
 const LeftHome = () => {
@@ -64,13 +64,13 @@ const LeftHome = () => {
 
                 <div className='flex items-center gap-2'>
 
-                    <div className='ml-2 w-[60px] h-[60px] border-2 border-black rounded-full cursor-pointer overflow-hidden'>
+                    <Link to={`/profile/${userData?.userName}`} className='ml-2 w-[60px] h-[60px] border-2 border-black rounded-full cursor-pointer overflow-hidden'>
                         <img
                             className='w-full h-full object-cover'
                             src={userData?.profileImage || dp}
                             alt=""
                         />
-                    </div>
+                    </Link>
 
                     <div className="flex flex-col">
 

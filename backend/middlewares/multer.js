@@ -15,4 +15,4 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 export default upload;
-//5:51:50
+ 

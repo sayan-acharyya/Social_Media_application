@@ -4,8 +4,11 @@ import { IoSearchOutline } from "react-icons/io5";
 import { RxVideo } from "react-icons/rx";
 import { FaPlus } from "react-icons/fa6";
 import dp from "../assets/dp.webp"
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Nav = () => {
+    const { userData } = useSelector(state => state.user)
     return (
         <div className='w-[90%] lg:w-[40%] h-[80px] bg-black flex 
         justify-around items-center fixed bottom-[20px] rounded-full
@@ -52,7 +55,9 @@ const Nav = () => {
             </div>
 
             {/* Profile */}
-            <div className="relative group cursor-pointer">
+            <Link
+                to={`/profile/${userData?.userName}`}
+                className="relative group cursor-pointer">
                 <div className='ml-2 w-[40px] h-[40px] border-2 border-black rounded-full overflow-hidden'>
                     <img
                         className='w-full h-full object-cover'
@@ -66,7 +71,7 @@ const Nav = () => {
                 group-hover:opacity-100 transition">
                     Profile
                 </span>
-            </div>
+            </Link>
 
         </div>
     )

@@ -12,6 +12,7 @@ import axios from "axios";
 import { setUserData } from './redux/slices/userSlice.js';
 import getCurrentUser from './hooks/getCurrentUser.jsx';
 import getSuggestedusers from './hooks/getSuggestedusers.jsx';
+import Profile from './pages/Profile.jsx';
 
 
 export const serverUrl = "http://localhost:8000/api"
@@ -60,6 +61,17 @@ const App = () => {
             </PrivateRoute>
           }
         />
+
+        <Route
+          path="/profile/:userName"
+          element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          }
+        />
+
+
       </Routes>
 
       <Toaster

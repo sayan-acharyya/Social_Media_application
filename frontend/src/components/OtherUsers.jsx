@@ -1,5 +1,6 @@
 import React from 'react'
 import dp from "../assets/dp.webp"
+import { Link } from 'react-router-dom'
 
 const OtherUsers = ({ user }) => {
     return (
@@ -7,7 +8,7 @@ const OtherUsers = ({ user }) => {
         rounded-xl hover:bg-[#121212] transition-all duration-200 cursor-pointer'>
 
             {/* LEFT SIDE */}
-            <div className='flex items-center gap-3'>
+            <Link to={`/profile/${user?.userName}`}  className='flex items-center gap-3'>
 
                 {/* profile image */}
                 <div className='w-[42px] h-[42px] rounded-full overflow-hidden'>
@@ -31,7 +32,7 @@ const OtherUsers = ({ user }) => {
 
                 </div>
 
-            </div>
+            </Link>
 
 
             {/* FOLLOW BUTTON */}
