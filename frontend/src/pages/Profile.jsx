@@ -53,6 +53,12 @@ const Profile = () => {
         }
     }
 
+    const dummyUsers = [
+        "https://i.pravatar.cc/100?img=1",
+        "https://i.pravatar.cc/100?img=2",
+        "https://i.pravatar.cc/100?img=3",
+        "https://i.pravatar.cc/100?img=4",
+    ];
 
     const check = userData?.userName === profileData?.userName;
 
@@ -147,33 +153,73 @@ const Profile = () => {
             </div>
 
             {/* STATS (CENTERED BELOW) */}
-            <div className="w-full flex justify-center gap-10 md:gap-16 py-4">
+            <div className="w-full flex justify-center gap-10 md:gap-16 py-5">
 
-                <div className="text-center">
-                    <p className="text-lg font-semibold">
-                        {profileData?.posts?.length || 0}
-                    </p>
-                    <p className="text-xs text-gray-400">Posts</p>
-                </div>
+    {/* POSTS */}
+    <div className="flex flex-col items-center gap-1">
 
-                <div className="text-center">
-                    <p className="text-lg font-semibold">
-                        {profileData?.followers?.length || 0}
-                    </p>
-                    <p className="text-xs text-gray-400">Followers</p>
-                </div>
+        {/* EMOJI + COUNT */}
+        <div className="flex items-center gap-1">
+            
+            <p className="text-[20px] font-semibold">
+                {profileData?.posts?.length || 0}
+            </p>
+        </div>
 
-                <div className="text-center">
-                    <p className="text-lg font-semibold">
-                        {profileData?.following?.length || 0}
-                    </p>
-                    <p className="text-xs text-gray-400">Following</p>
-                </div>
+        <p className="text-xs text-gray-400">Posts</p>
+    </div>
 
+    {/* FOLLOWERS */}
+    <div className="flex flex-col items-center gap-1">
+
+        <div className="flex items-center gap-2">
+            <div className="flex -space-x-2">
+                {dummyUsers.slice(0, 3).map((img, i) => (
+                    <img
+                        key={i}
+                        src={img}
+                        alt=""
+                        className="w-7 h-7 rounded-full border-2 border-black object-cover"
+                    />
+                ))}
             </div>
+
+            <p className="text-[20px] font-semibold">
+                {profileData?.followers?.length || 0}
+            </p>
+        </div>
+
+        <p className="text-xs text-gray-400">Followers</p>
+    </div>
+
+    {/* FOLLOWING */}
+    <div className="flex flex-col items-center gap-1">
+
+        <div className="flex items-center gap-2">
+            <div className="flex -space-x-2">
+                {dummyUsers.slice(1, 4).map((img, i) => (
+                    <img
+                        key={i}
+                        src={img}
+                        alt=""
+                        className="w-7 h-7 rounded-full border-2 border-black object-cover"
+                    />
+                ))}
+            </div>
+
+            <p className="text-[20px] font-semibold">
+                {profileData?.following?.length || 0}
+            </p>
+        </div>
+
+        <p className="text-xs text-gray-400">Following</p>
+    </div>
+
+</div>
 
         </div>
     )
 }
 
 export default Profile;
+//6:29:21
