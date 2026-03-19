@@ -9,6 +9,8 @@ import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import toast from 'react-hot-toast';
 import dp from "../assets/dp.webp";
 import logo from "../assets/image4.png";
+import Nav from '../components/Nav';
+import { MdVerified } from "react-icons/md";
 
 
 const Profile = () => {
@@ -130,8 +132,10 @@ const Profile = () => {
                     {/* DETAILS */}
                     <div className="flex flex-col gap-1">
 
-                        <h2 className="text-lg md:text-xl font-semibold">
+                        <h2 className="text-lg md:text-xl font-semibold flex gap-3  ">
                             {profileData?.name || "User"}
+
+                             {check && <MdVerified className="text-blue-500 text-[20px] mt-1.5" />}
                         </h2>
 
                         <span className="text-sm text-gray-400">
@@ -155,71 +159,120 @@ const Profile = () => {
             {/* STATS (CENTERED BELOW) */}
             <div className="w-full flex justify-center gap-10 md:gap-16 py-5">
 
-    {/* POSTS */}
-    <div className="flex flex-col items-center gap-1">
+                {/* POSTS */}
+                <div className="flex flex-col items-center gap-1">
 
-        {/* EMOJI + COUNT */}
-        <div className="flex items-center gap-1">
-            
-            <p className="text-[20px] font-semibold">
-                {profileData?.posts?.length || 0}
-            </p>
-        </div>
+                    {/* EMOJI + COUNT */}
+                    <div className="flex items-center gap-1">
 
-        <p className="text-xs text-gray-400">Posts</p>
-    </div>
+                        <p className="text-[20px] font-semibold">
+                            {profileData?.posts?.length || 0}
+                        </p>
+                    </div>
 
-    {/* FOLLOWERS */}
-    <div className="flex flex-col items-center gap-1">
+                    <p className="text-xs text-gray-400">Posts</p>
+                </div>
 
-        <div className="flex items-center gap-2">
-            <div className="flex -space-x-2">
-                {dummyUsers.slice(0, 3).map((img, i) => (
-                    <img
-                        key={i}
-                        src={img}
-                        alt=""
-                        className="w-7 h-7 rounded-full border-2 border-black object-cover"
-                    />
-                ))}
+                {/* FOLLOWERS */}
+                <div className="flex flex-col items-center gap-1">
+
+                    <div className="flex items-center gap-2">
+                        <div className="flex -space-x-3">
+                            {dummyUsers.slice(0, 3).map((img, i) => (
+                                <img
+                                    key={i}
+                                    src={img}
+                                    alt=""
+                                    className="w-7 h-7 rounded-full border-2 border-black object-cover"
+                                />
+                            ))}
+                        </div>
+
+                        <p className="text-[20px] font-semibold">
+                            {profileData?.followers?.length || 0}
+                        </p>
+                    </div>
+
+                    <p className="text-xs text-gray-400">Followers</p>
+                </div>
+
+                {/* FOLLOWING */}
+                <div className="flex flex-col items-center gap-1">
+
+                    <div className="flex items-center gap-2">
+                        <div className="flex -space-x-3">
+                            {dummyUsers.slice(1, 4).map((img, i) => (
+                                <img
+                                    key={i}
+                                    src={img}
+                                    alt=""
+                                    className="w-7 h-7 rounded-full border-2 border-black object-cover"
+                                />
+                            ))}
+                        </div>
+
+                        <p className="text-[20px] font-semibold">
+                            {profileData?.following?.length || 0}
+                        </p>
+                    </div>
+
+                    <p className="text-xs text-gray-400">Following</p>
+                </div>
+
             </div>
 
-            <p className="text-[20px] font-semibold">
-                {profileData?.followers?.length || 0}
-            </p>
-        </div>
+            {/* edit profile button + follow button and message button  */}
+            <div className='w-full h-[80px] flex justify-center items-center gap-[20px]'>
+                {
+                    check && (
+                        <button
+                            onClick={() => navigate("/editprofile")}
+                            className='px-[10px] min-w-[150px] py-[5px] h-[40px] 
+      bg-white border border-gray-300 
+      text-black font-medium
+      rounded-2xl cursor-pointer
+      hover:bg-gray-100 hover:scale-105
+      transition duration-200'
+                        >
+                            Edit Profile
+                        </button>
+                    )
+                }
 
-        <p className="text-xs text-gray-400">Followers</p>
-    </div>
 
-    {/* FOLLOWING */}
-    <div className="flex flex-col items-center gap-1">
+                {!check && (
+                    <>
+                        <button
+                            className='px-[10px] min-w-[150px] py-[5px] h-[40px]
+  bg-gradient-to-r from-pink-500 to-yellow-400
+  text-white font-bold rounded-2xl
+  hover:opacity-90 transition hover:scale-105'
+                        >
+                            Follow
+                        </button>
 
-        <div className="flex items-center gap-2">
-            <div className="flex -space-x-2">
-                {dummyUsers.slice(1, 4).map((img, i) => (
-                    <img
-                        key={i}
-                        src={img}
-                        alt=""
-                        className="w-7 h-7 rounded-full border-2 border-black object-cover"
-                    />
-                ))}
+                        <button
+                            className='px-[10px] min-w-[150px] py-[5px] h-[40px] 
+  bg-white border border-gray-300 
+  rounded-2xl text-black 
+  hover:bg-gray-100 hover:scale-105
+  cursor-pointer transition duration-200'
+                        >
+                            Message
+                        </button>
+                    </>
+                )}
             </div>
 
-            <p className="text-[20px] font-semibold">
-                {profileData?.following?.length || 0}
-            </p>
-        </div>
-
-        <p className="text-xs text-gray-400">Following</p>
-    </div>
-
-</div>
+            <div className='w-full min-h-[100vh] flex justify-center'>
+                <div className='w-full max-w-[900px] flex flex-col items-center 
+                rounded-t-[30px] bg-white relative gap-[20px] pt-[30px]'>
+                    <Nav />
+                </div>
+            </div>
 
         </div>
     )
 }
 
 export default Profile;
-//6:29:21

@@ -9,6 +9,7 @@ import { setUserData } from '../redux/slices/userSlice';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import OtherUsers from './OtherUsers';
+import { MdVerified } from 'react-icons/md';
 
 const LeftHome = () => {
 
@@ -79,12 +80,7 @@ const LeftHome = () => {
                             <span className="text-white font-semibold text-md tracking-wide">
                                 @{userData?.userName}
                             </span>
-
-                            <span className="text-[10px] px-2 py-[2px] rounded-full 
-                            bg-gradient-to-r from-yellow-500 to-pink-500 
-                            text-white font-semibold shadow-md">
-                                AUTHOR
-                            </span>
+                            <MdVerified className="text-blue-500 text-[20px]  " />
 
                         </div>
 

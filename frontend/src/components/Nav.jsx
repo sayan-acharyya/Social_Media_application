@@ -15,14 +15,16 @@ const Nav = () => {
         shadow-2xl shadow-[#000000] z-[100]'>
 
             {/* Home */}
-            <div className="relative group cursor-pointer">
+            <Link
+            to={"/"}
+            className="relative group cursor-pointer">
                 <GoHomeFill className='text-white w-[26px] h-[26px]' />
                 <span className="absolute bottom-[45px] left-1/2 -translate-x-1/2 
                 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 
                 group-hover:opacity-100 transition">
                     Home
                 </span>
-            </div>
+            </Link>
 
             {/* Search */}
             <div className="relative group cursor-pointer">
