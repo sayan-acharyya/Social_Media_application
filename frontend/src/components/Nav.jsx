@@ -63,7 +63,7 @@ const Nav = () => {
                 <div className='ml-2 w-[40px] h-[40px] border-2 border-black rounded-full overflow-hidden'>
                     <img
                         className='w-full h-full object-cover'
-                        src={dp}
+                        src={userData?.profileImage || dp}
                         alt=""
                     />
                 </div>
