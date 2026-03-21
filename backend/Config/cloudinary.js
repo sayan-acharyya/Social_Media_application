@@ -3,7 +3,7 @@ import fs from "fs";
 
 const uploadOnCloudinary = async (file) => {
 
-    try {
+    try {  
 
         cloudinary.config({
             cloud_name: process.env.CLOUD_NAME,
