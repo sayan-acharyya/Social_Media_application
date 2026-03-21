@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema({
-    user: {
+    author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
     },
-    text: {
+    message: {
         type: String,
         required: true
     }
