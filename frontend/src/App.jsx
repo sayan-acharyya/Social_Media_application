@@ -14,6 +14,7 @@ import getCurrentUser from './hooks/getCurrentUser.jsx';
 import getSuggestedusers from './hooks/getSuggestedusers.jsx';
 import Profile from './pages/Profile.jsx';
 import EditProfile from './pages/EditProfile.jsx';
+import Upload from './pages/Upload.jsx';
 
 
 export const serverUrl = "http://localhost:8000/api"
@@ -76,6 +77,15 @@ const App = () => {
           element={
             <PrivateRoute>
               <EditProfile />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/upload"
+          element={
+            <PrivateRoute>
+              <Upload />
             </PrivateRoute>
           }
         />

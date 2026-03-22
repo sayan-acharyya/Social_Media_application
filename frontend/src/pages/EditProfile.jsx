@@ -28,9 +28,11 @@ const EditProfile = () => {
             [e.target.name]: e.target.value
         });
     };
+
     const fileRef = useRef(null);
     const [imagePreview, setImagePreview] = useState(userData?.profileImage || dp);
     const [backendImage, setBackendImage] = useState(null);
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -85,22 +87,28 @@ const EditProfile = () => {
     };
 
     return (
-        <div className='w-full min-h-[100vh] bg-black flex items-center flex-col gap-[20px]'>
+        <div className='w-full min-h-screen bg-black flex items-center flex-col gap-6'>
 
             {/* HEADER */}
-            <div className='w-full max-w-[800px] flex items-center gap-4 py-4 px-4 text-white'>
+            <div className='w-full max-w-[800px] flex items-center gap-4 py-4 px-4'>
                 <MdOutlineKeyboardBackspace
                     onClick={() => navigate(-1)}
-                    className='text-[28px] cursor-pointer hover:scale-110 transition'
+                    className='text-[28px] text-white cursor-pointer hover:scale-110 transition'
                 />
-                <h1 className='text-[20px] font-semibold'>Edit Profile</h1>
+
+                {/* Gradient Text */}
+                <h1 className='text-[20px] font-semibold bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 bg-clip-text text-transparent'>
+                    Edit Profile
+                </h1>
             </div>
 
-            {/* PROFILE IMAGE */}
+            {/* Gradient Line */}
+            <div className="w-[90%] max-w-[600px] h-[2px] bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 opacity-70"></div>
+
             {/* PROFILE IMAGE */}
             <div className="w-[90px] h-[90px] md:w-[130px] md:h-[130px] 
-    rounded-full overflow-hidden p-[2px] 
-    bg-gradient-to-tr from-pink-500 to-yellow-500">
+                rounded-full overflow-hidden p-[2px] 
+                bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500">
 
                 <img
                     className="w-full h-full object-cover rounded-full"
@@ -109,10 +117,11 @@ const EditProfile = () => {
                 />
             </div>
 
-            {/* CLICK TEXT */}
+            {/* CHANGE TEXT */}
             <div
                 onClick={() => fileRef.current.click()}
-                className='text-blue-500 text-center text-[18px] font-semibold cursor-pointer hover:underline'
+                className='text-transparent bg-gradient-to-r from-yellow-400 to-pink-500 bg-clip-text 
+                text-center text-[18px] font-semibold cursor-pointer hover:underline'
             >
                 Change Your Profile Picture
             </div>
@@ -123,8 +132,9 @@ const EditProfile = () => {
                 accept="image/*"
                 ref={fileRef}
                 onChange={handleImageChange}
-                className="hidden "
+                className="hidden"
             />
+
             {/* INPUTS */}
             {
                 fields.map((field, index) => (
@@ -144,15 +154,19 @@ const EditProfile = () => {
             }
 
             {/* BUTTON */}
-            <button className='w-[60%] max-w-[400px] h-[50px] 
-               bg-blue-600
-                text-white font-semibold rounded-2xl mb-5 
-                hover:opacity-90 transition'
+            <button
+                className='w-[60%] max-w-[400px] h-[50px] 
+                bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500
+                text-black font-semibold rounded-2xl mb-5 
+                hover:scale-105 transition'
                 onClick={handleEditProfile}
             >
-                {loading ? <div className="w-full flex justify-center items-center">
-                    <FiLoader className="w-6 h-6 animate-spin mr-3" /> Updating....
-                </div> : "Save Profile"}
+                {loading ? (
+                    <div className="w-full flex justify-center items-center">
+                        <FiLoader className="w-6 h-6 animate-spin mr-3" />
+                        Updating...
+                    </div>
+                ) : "Save Profile"}
             </button>
 
         </div>

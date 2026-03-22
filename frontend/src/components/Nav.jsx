@@ -37,14 +37,14 @@ const Nav = () => {
             </div>
 
             {/* Post */}
-            <div className="relative group cursor-pointer">
+            <Link to={"/upload"} className="relative group cursor-pointer">
                 <FaPlus className='text-white w-[26px] h-[26px]' />
                 <span className="absolute bottom-[45px] left-1/2 -translate-x-1/2 
                 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 
                 group-hover:opacity-100 transition">
                     Post
                 </span>
-            </div>
+            </Link>
 
             {/* Reels */}
             <div className="relative group cursor-pointer">
