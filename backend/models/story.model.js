@@ -31,7 +31,7 @@ const storySchema = new mongoose.Schema(
             default: Date.now,
             expires: 86400   // delete after 24 hours
         }
-
+ 
     });
 
 const Story = mongoose.model("Story", storySchema);

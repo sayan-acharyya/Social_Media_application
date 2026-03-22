@@ -7,7 +7,7 @@ import authRouter from "./routes/auth.routes.js";
 import userRouter from "./routes/user.routers.js";
 import postRouter from "./routes/post.routes.js";
 import loopRouter from "./routes/loop.routes.js";
-
+import storyRouter from "./routes/story.routes.js";
 
 dotenv.config();
 
@@ -40,6 +40,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
 app.use("/api/loop", loopRouter);
+app.use("/api/story", storyRouter);
 
 /* ---------------- SERVER ---------------- */
 
