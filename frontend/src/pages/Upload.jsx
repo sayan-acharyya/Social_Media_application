@@ -31,7 +31,7 @@ const Upload = () => {
 
 //9:10:17
 
-    return (
+    return (   
         <div className="w-full h-screen bg-black flex flex-col items-center">
 
             {/* Header */}
