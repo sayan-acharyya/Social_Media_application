@@ -25,7 +25,7 @@ const App = () => {
   getSuggestedusers();
 
 
-  return (
+  return ( 
     <>
       <Routes>
         <Route

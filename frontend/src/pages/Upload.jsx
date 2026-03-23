@@ -1,9 +1,12 @@
 import { useRef } from "react";
 import { useState } from "react";
-import { FiPlus } from "react-icons/fi";
+import { FiLoader, FiPlus } from "react-icons/fi";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import VideoPlayer from "../components/VideoPlayer";
+import axios from "axios"
+import { serverUrl } from "../App";
+import toast from "react-hot-toast";
 
 const Upload = () => {
     const navigate = useNavigate();
@@ -12,6 +15,7 @@ const Upload = () => {
     const [backendMedia, setBackendMedia] = useState(null);
     const [mediaType, setMediaType] = useState("");
     const [caption, setCaption] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const mediaInput = useRef()
 
@@ -29,9 +33,100 @@ const Upload = () => {
         setFrontendMedia(URL.createObjectURL(file))
     }
 
-//9:10:17
+    const uploadPost = async () => {
+        setLoading(true);
+        try {
+            const formData = new FormData();
+            formData.append("caption", caption);
+            formData.append("mediaType", mediaType);
+            formData.append("media", backendMedia);
 
-    return (   
+            const result = await axios.post(`${serverUrl}/post/upload`, formData, {
+                withCredentials: true
+            })
+
+            toast.success(result.data.message || "Post Uploaded Successfully");
+            setLoading(false);
+        } catch (error) {
+            toast.error(error.response?.data?.message || "error in Post");
+            setLoading(false);
+        }
+    }
+
+    const uploadStory = async () => {
+        setLoading(true);
+        try {
+            const formData = new FormData();
+
+            formData.append("mediaType", mediaType);
+            formData.append("media", backendMedia);
+
+            const result = await axios.post(`${serverUrl}/story/upload`, formData, {
+                withCredentials: true
+            })
+
+            toast.success(result.data.message || "Story Uploaded Successfully");
+            setLoading(false);
+        } catch (error) {
+            toast.error(error.response?.data?.message || "error in story");
+            setLoading(false);
+        }
+    }
+
+    const uploadLoop = async () => {
+        setLoading(true);
+        try {
+            const formData = new FormData();
+            formData.append("caption", caption);
+             
+            formData.append("media", backendMedia);
+
+            const result = await axios.post(`${serverUrl}/loop/upload`, formData, {
+                withCredentials: true
+            })
+
+            toast.success(result.data.message || "Loop Uploaded Successfully");
+            setLoading(false);
+        } catch (error) {
+            toast.error(error.response?.data?.message || "error in Loop");
+            setLoading(false);
+        }
+    }
+
+    const handleUpload = async () => {
+        // Validation
+        if (!backendMedia) {
+            return toast.error("Please select a file first");
+        }
+
+
+
+        try {
+            if (activeTab === "Post") {
+                await uploadPost();
+            }
+            else if (activeTab === "Story") {
+                await uploadStory();
+            }
+            else if (activeTab === "Loop") {
+                if (mediaType !== "video") {
+                    return toast.error("Loop must be a video");
+                }
+                await uploadLoop();
+            }
+
+            // Reset after upload
+            setFrontendMedia(null);
+            setBackendMedia(null);
+            setCaption("");
+            setMediaType("");
+
+        } catch (error) {
+            toast.error("Upload failed");
+        }
+    };
+
+    return (
         <div className="w-full h-screen bg-black flex flex-col items-center">
 
             {/* Header */}
@@ -148,8 +243,15 @@ const Upload = () => {
                 frontendMedia && <button className=" px-[10px] w-[60%] max-w-[400px] py-[5px]
                 h-[50px] bg-gradient-to-r from-yellow-400 to-pink-500 
             text-black font-semibold
-            hover:scale-105 transition mt-[50px] cursor-pointer rounded-2xl">
-                    Upload {mediaType}
+            hover:scale-105 transition mt-[50px] cursor-pointer rounded-2xl"
+
+
+                    onClick={handleUpload}
+
+
+
+                >
+                    {loading ? <FiLoader className="animate-spin w-6 h-6 mx-auto" /> : `upload ${mediaType}`}
                 </button>
             }
         </div>
