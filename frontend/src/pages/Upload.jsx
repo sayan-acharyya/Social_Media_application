@@ -79,7 +79,7 @@ const Upload = () => {
             const formData = new FormData();
             formData.append("caption", caption);
              
-            formData.append("media", backendMedia);
+            formData.append("media", backendMedia);   
 
             const result = await axios.post(`${serverUrl}/loop/upload`, formData, {
                 withCredentials: true
