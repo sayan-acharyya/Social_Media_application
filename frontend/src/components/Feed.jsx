@@ -3,8 +3,14 @@ import { FiHeart } from "react-icons/fi";
 import logo from "../assets/image4.png";
 import StoryDp from "./StoryDp";
 import Nav from "./Nav";
+import { useSelector } from "react-redux";
+import Post from "./Post";
+ 
 
 const Feed = () => {
+    const { postData } = useSelector(state => state.post);
+
+
     return (
         <div className="lg:w-[50%] w-full bg-black h-screen relative overflow-y-auto no-scrollbar">
 
@@ -38,6 +44,12 @@ const Feed = () => {
       gap-[20px] p-[10px] pt-[40px] bg-white rounded-t-[60px] 
       pb-[120px]">
                 <Nav />
+                {
+                    postData && postData.map((post, index) => (
+                        <Post postData={post} key={index} />
+                    ))
+                }
+
             </div>
 
         </div>

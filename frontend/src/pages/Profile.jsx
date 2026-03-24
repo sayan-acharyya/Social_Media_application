@@ -135,7 +135,7 @@ const Profile = () => {
                         <h2 className="text-lg md:text-xl font-semibold flex gap-3  ">
                             {profileData?.name || "User"}
 
-                             {check && <MdVerified className="text-blue-500 text-[20px] mt-1.5" />}
+                            {check && <MdVerified className="text-blue-500 text-[20px] mt-1.5" />}
                         </h2>
 
                         <span className="text-sm text-gray-400">
@@ -228,8 +228,8 @@ const Profile = () => {
                         <button
                             onClick={() => navigate("/editprofile")}
                             className='px-[10px] min-w-[150px] py-[5px] h-[40px] 
-      bg-white border border-gray-300 
-      text-black font-medium
+      bg-gradient-to-r from-pink-500 to-yellow-400 
+      text-white font-medium
       rounded-2xl cursor-pointer
       hover:bg-gray-100 hover:scale-105
       transition duration-200'

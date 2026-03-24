@@ -15,6 +15,7 @@ import getSuggestedusers from './hooks/getSuggestedusers.jsx';
 import Profile from './pages/Profile.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 import Upload from './pages/Upload.jsx';
+import useGetAllPosts from './hooks/getAllPosts.jsx';
 
 
 export const serverUrl = "http://localhost:8000/api"
@@ -23,9 +24,10 @@ const App = () => {
 
   getCurrentUser();
   getSuggestedusers();
+  useGetAllPosts();
 
-
-  return ( 
+  
+  return (
     <>
       <Routes>
         <Route

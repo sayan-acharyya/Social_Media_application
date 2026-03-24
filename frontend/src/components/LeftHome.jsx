@@ -94,9 +94,9 @@ const LeftHome = () => {
 
                 <button
                     onClick={handleLogout}
-                    className="px-4 py-2 text-sm font-semibold text-white rounded-lg 
-                    bg-gradient-to-r from-yellow-500 to-pink-600  
-                    hover:scale-105 transition-all duration-300 mr-3 shadow-lg font-bold">
+                    className="px-4 py-1.5 text-sm font-semibold text-white border border-gray-600 
+             rounded-md hover:bg-zinc-900 transition-colors mr-3 active:opacity-70"
+                >
                     Log Out
                 </button>
 
