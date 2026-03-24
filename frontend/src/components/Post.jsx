@@ -130,7 +130,7 @@ const Post = ({ postData }) => {
 
         </div>
     )
-}
+}    
 
 export default Post;
 
