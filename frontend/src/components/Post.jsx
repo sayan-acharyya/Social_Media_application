@@ -29,6 +29,7 @@ const Post = ({ post }) => {
     const dispatch = useDispatch();
     const [showComment, setShowComment] = useState(false);
     const [message, setMessage] = useState("");
+    const [openAllComments, setOpenAllComments] = useState(false);
 
     const handleLike = async () => {
         try {
@@ -46,7 +47,23 @@ const Post = ({ post }) => {
         }
     }
 
+    const handleComment = async () => {
+        try {
+            const result = await axios.post(`${serverUrl}/post/comment/${post._id}`, { message },
+                { withCredentials: true }
+            );
 
+            const updatedPost = result.data.post;
+
+            const updatedPosts = postData.map(p => p._id == post?._id ? updatedPost : p);
+            dispatch(setPostData(updatedPosts));
+            toast.success("Comment added 💬");
+            setShowComment(false);
+            setMessage("");
+        } catch (error) {
+            toast.error(error.response?.data?.message);
+        }
+    }
 
     return (
         <div className='w-[90%] max-w-[500px] bg-white 
@@ -130,7 +147,7 @@ const Post = ({ post }) => {
                     {/* COMMENT */}
                     <div className="flex items-center gap-2 cursor-pointer group active:scale-90 transition">
                         <FaRegComment
-                            onClick={() => setShowComment(true)}
+                            onClick={() => setShowComment(!showComment)}
                             className="w-6 h-6 text-gray-700 group-hover:text-blue-500 group-hover:scale-110 transition"
                         />
                         <span className="text-sm font-medium text-gray-700">
@@ -186,11 +203,104 @@ const Post = ({ post }) => {
                         />
 
                         <button
+                            onClick={handleComment}
                             className="p-2 rounded-full bg-blue-500 text-white 
                             hover:bg-blue-600 transition active:scale-90"
                         >
                             <FiSend className="w-5 h-5" />
                         </button>
+
+                    </div>
+                )
+            }
+            {/* Preview Comments (only 2) */}
+            <div className='w-full px-4 pb-2 flex flex-col gap-2'>
+
+                {
+                    post.comments?.slice(0, 2).map((comment, index) => (
+                        <div key={index} className="flex items-start gap-2">
+
+                            <img
+                                src={comment.author?.profileImage || dp}
+                                className="w-[28px] h-[28px] rounded-full object-cover"
+                            />
+
+                            <p className="text-sm">
+                                <span className="font-semibold mr-1">
+                                    {comment.author?.userName}
+                                </span>
+                                {comment.message}
+                            </p>
+
+                        </div>
+                    ))
+                }
+
+                {/* View All Comments */}
+                {
+                    post.comments?.length > 2 && (
+                        <button
+                            onClick={() => setOpenAllComments(true)}
+                            className="text-gray-500 text-sm text-left hover:underline"
+                        >
+                            View all  comments
+                        </button>
+                    )
+                }
+
+            </div>
+
+            {
+                openAllComments && (
+                    <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm bg-white/30">
+
+                        <div className="w-[95%] max-w-[550px] h-[85vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+
+                            {/* Header */}
+                            <div className="flex justify-between items-center px-5 py-4 border-b bg-white sticky top-0 z-10">
+                                <h2 className="font-semibold text-lg">Comments</h2>
+                                <button
+                                    onClick={() => setOpenAllComments(false)}
+                                    className="text-gray-500 hover:text-black text-xl transition"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+
+                            {/* Comments List */}
+                            <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3">
+
+                                {
+                                    post.comments?.map((comment, index) => (
+                                        <div key={index} className="flex items-center gap-3 bg-gray-200 p-3 rounded-2xl">
+
+                                            {/* Profile */}
+                                            <img
+                                                src={comment.author?.profileImage || dp}
+                                                className="w-[40px] h-[40px] rounded-full object-cover border"
+                                            />
+
+                                            {/* Content */}
+                                            <div className="flex flex-col  ">
+                                                <span className="text-sm">
+                                                    <span className="font-semibold mr-1">
+                                                        {comment.author?.userName}
+                                                    </span>
+                                                    {comment.message}
+                                                </span>
+
+
+                                            </div>
+
+                                        </div>
+                                    ))
+                                }
+
+                            </div>
+
+
+
+                        </div>
 
                     </div>
                 )

@@ -57,6 +57,7 @@ export const getAllPosts = async (req, res) => {
     try {
         const posts = await Post.find({})
             .populate("author", "name userName profileImage")
+            .populate("comments.author", "name userName profileImage") // ✅ ADD THIS
             .sort({ createdAt: -1 });
 
         return res.status(200).json({
@@ -100,6 +101,7 @@ export const like = async (req, res) => {
 
         await post.save();
         await post.populate("author", "name userName profileImage");
+        await post.populate("comments.author", "name userName profileImage");
 
         return res.status(200).json({
             success: true,
@@ -120,7 +122,7 @@ export const comment = async (req, res) => {
     try {
         const { message } = req.body;
         const { postId } = req.params;
- 
+
         if (!message) {
             return res.status(400).json({
                 success: false,
