@@ -1,23 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
 import dp from "../assets/dp.webp"
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { FaRegComment } from "react-icons/fa";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa6"
+import { FiSend } from "react-icons/fi";
+import axios from "axios"
+import { serverUrl } from '../App';
+import { setPostData } from '../redux/slices/postSlice';
+import toast from 'react-hot-toast';
 
-const Post = ({ postData }) => {
+const Post = ({ post }) => {
 
     const { userData } = useSelector(state => state.user);
+    const { postData } = useSelector(state => state.post);
 
-    const check = userData?._id !== postData.author?._id;
 
-    const isLiked = postData.likes.some(
+    const check = userData?._id !== post.author?._id;
+
+    const isLiked = post.likes.some(
         id => id.toString() === userData?._id
     );
 
-    const isSaved = postData.saved?.some(
+    const isSaved = post.saved?.some(
         id => id.toString() === userData?._id
     );
+
+    const dispatch = useDispatch();
+    const [showComment, setShowComment] = useState(false);
+    const [message, setMessage] = useState("");
+
+    const handleLike = async () => {
+        try {
+            const result = await axios.get(`${serverUrl}/post/like/${post._id}`,
+                { withCredentials: true }
+            );
+
+            const updatedPost = result.data.post;
+
+            const updatedPosts = postData.map(p => p._id == post?._id ? updatedPost : p);
+            dispatch(setPostData(updatedPosts));
+            toast.success(isLiked ? "You disliked the post 💔" : "You liked the post ❤️");
+        } catch (error) {
+            toast.error(error.response?.data?.message);
+        }
+    }
+
+
 
     return (
         <div className='w-[90%] max-w-[500px] bg-white 
@@ -31,7 +60,7 @@ const Post = ({ postData }) => {
                     {/* Profile */}
                     <div className="w-[45px] h-[45px] rounded-full overflow-hidden border">
                         <img
-                            src={postData.author?.profileImage || dp}
+                            src={post.author?.profileImage || dp}
                             alt="profile"
                             className="w-full h-full object-cover"
                         />
@@ -40,10 +69,10 @@ const Post = ({ postData }) => {
                     {/* Info */}
                     <div className="flex flex-col leading-tight">
                         <span className="text-gray-900 font-semibold text-sm">
-                            {postData.author?.userName || "username"}
+                            {post.author?.userName || "username"}
                         </span>
                         <span className="text-gray-500 text-xs">
-                            {postData.author?.name || "name"}
+                            {post.author?.name || "name"}
                         </span>
                     </div>
                 </div>
@@ -60,17 +89,17 @@ const Post = ({ postData }) => {
 
             {/* MEDIA */}
             <div className="w-full bg-black">
-                {postData.mediaType === "image" && (
+                {post.mediaType === "image" && (
                     <img
-                        src={postData.media}
+                        src={post.media}
                         alt="post"
                         className="w-full max-h-[500px] object-cover"
                     />
                 )}
 
-                {postData.mediaType === "video" && (
+                {post.mediaType === "video" && (
                     <video
-                        src={postData.media}
+                        src={post.media}
                         controls
                         className="w-full max-h-[500px] object-cover"
                     />
@@ -84,22 +113,28 @@ const Post = ({ postData }) => {
                 <div className="flex items-center gap-6">
 
                     {/* LIKE */}
-                    <div className="flex items-center gap-2 cursor-pointer group active:scale-90 transition">
+                    <div
+                        onClick={handleLike}
+                        className="flex items-center gap-2 cursor-pointer group active:scale-90 transition"
+                    >
                         {isLiked ? (
                             <GoHeartFill className="w-6 h-6 text-red-500 group-hover:scale-110 transition" />
                         ) : (
                             <GoHeart className="w-6 h-6 text-gray-700 group-hover:text-red-500 group-hover:scale-110 transition" />
                         )}
                         <span className="text-sm font-medium text-gray-700">
-                            {postData.likes.length}
+                            {post.likes.length}
                         </span>
                     </div>
 
                     {/* COMMENT */}
                     <div className="flex items-center gap-2 cursor-pointer group active:scale-90 transition">
-                        <FaRegComment className="w-6 h-6 text-gray-700 group-hover:text-blue-500 group-hover:scale-110 transition" />
+                        <FaRegComment
+                            onClick={() => setShowComment(true)}
+                            className="w-6 h-6 text-gray-700 group-hover:text-blue-500 group-hover:scale-110 transition"
+                        />
                         <span className="text-sm font-medium text-gray-700">
-                            {postData.comments.length}
+                            {post.comments.length}
                         </span>
                     </div>
 
@@ -117,21 +152,52 @@ const Post = ({ postData }) => {
             </div>
 
             {/* CAPTION */}
-            {postData.caption && (
+            {post.caption && (
                 <div className="px-4 pb-4 text-sm text-gray-800">
                     <span className="font-semibold mr-2">
-                        {postData.author?.userName}
+                        {post.author?.userName}
                     </span>
                     <span className="break-words">
-                        {postData.caption}
+                        {post.caption}
                     </span>
                 </div>
             )}
 
+            {/* COMMENT BOX */}
+            {
+                showComment && (
+                    <div className="w-full px-4 py-3 border-t flex items-center gap-3 bg-white">
+
+                        <div className="w-[38px] h-[38px] rounded-full overflow-hidden border">
+                            <img
+                                src={userData?.profileImage || dp}
+                                alt="profile"
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+
+                        <input
+                            type="text"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            placeholder="Write a comment..."
+                            className="flex-1 bg-gray-100 px-4 py-2 rounded-full 
+                            outline-none text-sm focus:ring-2 focus:ring-blue-400"
+                        />
+
+                        <button
+                            className="p-2 rounded-full bg-blue-500 text-white 
+                            hover:bg-blue-600 transition active:scale-90"
+                        >
+                            <FiSend className="w-5 h-5" />
+                        </button>
+
+                    </div>
+                )
+            }
+
         </div>
     )
-}    
+}
 
 export default Post;
-
-//10:13:44

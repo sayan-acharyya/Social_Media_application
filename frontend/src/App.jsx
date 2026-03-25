@@ -22,7 +22,7 @@ export const serverUrl = "http://localhost:8000/api"
 
 const App = () => {
 
-  getCurrentUser();
+  getCurrentUser(); 
   getSuggestedusers();
   useGetAllPosts();
 
