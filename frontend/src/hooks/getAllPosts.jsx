@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { serverUrl } from '../App';
 import { setPostData } from '../redux/slices/postSlice';
 
 const useGetAllPosts = () => {
-    const dispatch = useDispatch();
-
+    const dispatch = useDispatch(); 
     useEffect(() => {
         const fetchPost = async () => {
             try {

@@ -9,6 +9,8 @@ import axios from "axios"
 import { serverUrl } from '../App';
 import { setPostData } from '../redux/slices/postSlice';
 import toast from 'react-hot-toast';
+import { setUserData } from '../redux/slices/userSlice';
+import useGetAllPosts from '../hooks/getAllPosts';
 
 const Post = ({ post }) => {
 
@@ -22,8 +24,8 @@ const Post = ({ post }) => {
         id => id.toString() === userData?._id
     );
 
-    const isSaved = post.saved?.some(
-        id => id.toString() === userData?._id
+    const isSaved = userData?.saved?.some(
+        item => (item._id || item).toString() === post._id.toString()
     );
 
     const dispatch = useDispatch();
@@ -60,6 +62,21 @@ const Post = ({ post }) => {
             toast.success("Comment added 💬");
             setShowComment(false);
             setMessage("");
+        } catch (error) {
+            toast.error(error.response?.data?.message);
+        }
+    }
+
+    const handleSave = async () => {
+        try {
+            const result = await axios.get(`${serverUrl}/post/saved/${post._id}`,
+                { withCredentials: true }
+            );
+
+            dispatch(setUserData(result.data.user))
+
+            toast.success(result.data.message);
+
         } catch (error) {
             toast.error(error.response?.data?.message);
         }
@@ -158,7 +175,9 @@ const Post = ({ post }) => {
                 </div>
 
                 {/* RIGHT - SAVE */}
-                <div className="p-2 rounded-full hover:bg-gray-100 cursor-pointer 
+                <div
+                    onClick={handleSave}
+                    className="p-2 rounded-full hover:bg-gray-100 cursor-pointer 
                 transition active:scale-90">
                     {isSaved ? (
                         <FaBookmark className="w-6 h-6 text-black" />
@@ -311,3 +330,4 @@ const Post = ({ post }) => {
 }
 
 export default Post;
+
