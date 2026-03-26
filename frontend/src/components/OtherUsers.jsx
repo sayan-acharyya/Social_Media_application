@@ -2,8 +2,22 @@ import React from 'react'
 import dp from "../assets/dp.webp"
 import { Link } from 'react-router-dom'
 import FollowButton from './FollowButton'
+import { useDispatch, useSelector } from 'react-redux'
+import { setProfileData, setUserData, toggleFollow } from '../redux/slices/userSlice'
+import axios from 'axios'
+import { serverUrl } from '../App'
+import toast from 'react-hot-toast'
 
 const OtherUsers = ({ user }) => {
+    const dispatch = useDispatch();
+    const { userData, following, profileData } = useSelector(state => state.user);
+
+
+
+
+
+
+
     return (
         <div className='w-full flex items-center justify-between px-3 py-3 
         rounded-xl hover:bg-[#121212] transition-all duration-200 cursor-pointer'>
@@ -37,11 +51,7 @@ const OtherUsers = ({ user }) => {
 
 
             {/* FOLLOW BUTTON */}
-            {/* <button className='px-4 py-[6px] text-xs font-semibold rounded-full 
-            bg-[#1a1a1a] text-white hover:bg-gradient-to-r 
-            hover:from-yellow-500 hover:to-pink-600 transition-all duration-300'>
-                Follow
-            </button> */}
+
             <FollowButton
                 targetUserId={user?._id}
                 tailwind="px-4 py-[6px] text-xs font-semibold rounded-full 

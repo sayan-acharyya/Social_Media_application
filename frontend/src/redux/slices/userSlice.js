@@ -31,7 +31,10 @@ const userSlice = createSlice({
 
         },
     }
+   
 })
+
+ 
 
 export const { setUserData, setFollowing, toggleFollow, setSuggestedusers, setProfileData } = userSlice.actions;
 export default userSlice.reducer;

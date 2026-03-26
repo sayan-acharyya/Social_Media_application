@@ -155,7 +155,9 @@ export const follow = async (req, res) => {
 
             return res.status(200).json({
                 following: false,
-                message: "Unfollowed successfully"
+                message: "Unfollowed successfully",
+                user: currentUser,
+                profileUser: targetUser
             })
         } else {
             currentUser.following.push(targetUserid);
@@ -166,10 +168,12 @@ export const follow = async (req, res) => {
 
             return res.status(200).json({
                 following: true,
-                message: "followed successfully"
+                message: "followed successfully",
+                user: currentUser,
+                profileUser: targetUser
             })
         }
- 
+
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -177,3 +181,4 @@ export const follow = async (req, res) => {
         });
     }
 }
+

@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios';
 import { serverUrl } from '../App';
-import { setProfileData, toggleFollow } from '../redux/slices/userSlice';
+import { setProfileData, toggleFollow, setUserData } from '../redux/slices/userSlice';
 import toast from 'react-hot-toast';
 
 const FollowButton = ({ targetUserId, tailwind }) => {
@@ -10,6 +10,10 @@ const FollowButton = ({ targetUserId, tailwind }) => {
     const { userData, following, profileData } = useSelector(state => state.user);
 
     const isFollowing = following.includes(targetUserId)
+
+     
+    
+    
 
     const handleFollow = async () => {
         try {
@@ -20,6 +24,8 @@ const FollowButton = ({ targetUserId, tailwind }) => {
 
             // ✅ update following
             dispatch(toggleFollow(targetUserId));
+            dispatch(setUserData(result.data.user));
+            dispatch(setProfileData(result.data.profileUser));
 
             // ✅ update profile followers count instantly
             let updatedFollowers;
@@ -46,11 +52,16 @@ const FollowButton = ({ targetUserId, tailwind }) => {
         }
     };
 
+
+
+
+
+
     return (
         <button
             onClick={handleFollow}
             className={tailwind}>
-            {isFollowing ? "Unfollow" : " Follow"}
+            {isFollowing  ? "Unfollow" : " Follow"}
         </button>
     )
 }
