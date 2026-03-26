@@ -121,3 +121,59 @@ export const getProfile = async (req, res) => {
         });
     }
 };
+
+export const follow = async (req, res) => {
+    try {
+        const currentUserId = req.userId;
+        const targetUserid = req.params.targetUserid;
+
+        if (!targetUserid) {
+            return res.status(400).json({
+                success: false,
+                message: "target user not found"
+            })
+        }
+
+        if (targetUserid === currentUserId) {
+            return res.status(400).json({
+                success: false,
+                message: "you can't follow to yourself"
+            })
+        }
+
+        const currentUser = await User.findById(currentUserId);
+        const targetUser = await User.findById(targetUserid);
+
+        const isFollowing = currentUser.following.includes(targetUserid);
+
+        if (isFollowing) {
+            currentUser.following = currentUser.following.filter(id => id.toString() != targetUserid.toString());
+            targetUser.followers = targetUser.followers.filter(id => id.toString() != currentUserId.toString());
+
+            await currentUser.save();
+            await targetUser.save();
+
+            return res.status(200).json({
+                following: false,
+                message: "Unfollowed successfully"
+            })
+        } else {
+            currentUser.following.push(targetUserid);
+            targetUser.followers.push(currentUserId);
+
+            await currentUser.save();
+            await targetUser.save();
+
+            return res.status(200).json({
+                following: true,
+                message: "followed successfully"
+            })
+        }
+ 
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: `error in follow ${error}`
+        });
+    }
+}

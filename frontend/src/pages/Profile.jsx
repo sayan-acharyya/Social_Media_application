@@ -11,6 +11,7 @@ import dp from "../assets/dp.webp";
 import logo from "../assets/image4.png";
 import Nav from '../components/Nav';
 import { MdVerified } from "react-icons/md";
+import FollowButton from '../components/FollowButton';
 
 
 const Profile = () => {
@@ -242,14 +243,14 @@ const Profile = () => {
 
                 {!check && (
                     <>
-                        <button
-                            className='px-[10px] min-w-[150px] py-[5px] h-[40px]
+
+                        <FollowButton
+                            targetUserId={profileData?._id}
+                            tailwind="px-[10px] min-w-[150px] py-[5px] h-[40px]
   bg-gradient-to-r from-pink-500 to-yellow-400
   text-white font-bold rounded-2xl
-  hover:opacity-90 transition hover:scale-105'
-                        >
-                            Follow
-                        </button>
+  hover:opacity-90 transition hover:scale-105"
+                        />
 
                         <button
                             className='px-[10px] min-w-[150px] py-[5px] h-[40px] 

@@ -11,6 +11,8 @@ import { setPostData } from '../redux/slices/postSlice';
 import toast from 'react-hot-toast';
 import { setUserData } from '../redux/slices/userSlice';
 import useGetAllPosts from '../hooks/getAllPosts';
+import FollowButton from './FollowButton';
+import { useNavigate } from 'react-router-dom';
 
 const Post = ({ post }) => {
 
@@ -82,6 +84,8 @@ const Post = ({ post }) => {
         }
     }
 
+    const navigate = useNavigate();
+
     return (
         <div className='w-[90%] max-w-[500px] bg-white 
         flex flex-col rounded-2xl shadow-lg overflow-hidden'>
@@ -92,7 +96,9 @@ const Post = ({ post }) => {
                 <div className="flex items-center gap-3 cursor-pointer">
 
                     {/* Profile */}
-                    <div className="w-[45px] h-[45px] rounded-full overflow-hidden border">
+                    <div
+                       onClick={()=>navigate(`/profile/${post?.author?.userName}`)}
+                        className="w-[45px] h-[45px] rounded-full overflow-hidden border">
                         <img
                             src={post.author?.profileImage || dp}
                             alt="profile"
@@ -113,11 +119,14 @@ const Post = ({ post }) => {
 
                 {/* Follow Button */}
                 {check && (
-                    <button className='px-4 py-1.5 text-sm font-semibold 
+
+
+                    <FollowButton
+                        targetUserId={post?.author?._id}
+                        tailwind="px-4 py-1.5 text-sm font-semibold 
                     bg-blue-500 text-white rounded-full hover:bg-blue-600 
-                    transition'>
-                        Follow
-                    </button>
+                    transition"
+                    />
                 )}
             </div>
 

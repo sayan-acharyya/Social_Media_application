@@ -1,6 +1,7 @@
 import React from 'react'
 import dp from "../assets/dp.webp"
 import { Link } from 'react-router-dom'
+import FollowButton from './FollowButton'
 
 const OtherUsers = ({ user }) => {
     return (
@@ -8,7 +9,7 @@ const OtherUsers = ({ user }) => {
         rounded-xl hover:bg-[#121212] transition-all duration-200 cursor-pointer'>
 
             {/* LEFT SIDE */}
-            <Link to={`/profile/${user?.userName}`}  className='flex items-center gap-3'>
+            <Link to={`/profile/${user?.userName}`} className='flex items-center gap-3'>
 
                 {/* profile image */}
                 <div className='w-[42px] h-[42px] rounded-full overflow-hidden'>
@@ -36,11 +37,18 @@ const OtherUsers = ({ user }) => {
 
 
             {/* FOLLOW BUTTON */}
-            <button className='px-4 py-[6px] text-xs font-semibold rounded-full 
+            {/* <button className='px-4 py-[6px] text-xs font-semibold rounded-full 
             bg-[#1a1a1a] text-white hover:bg-gradient-to-r 
             hover:from-yellow-500 hover:to-pink-600 transition-all duration-300'>
                 Follow
-            </button>
+            </button> */}
+            <FollowButton
+                targetUserId={user?._id}
+                tailwind="px-4 py-[6px] text-xs font-semibold rounded-full 
+  bg-[#1a1a1a] text-white hover:bg-gradient-to-r 
+  hover:from-yellow-500 hover:to-pink-600 transition-all duration-300"
+            />
+
 
         </div>
     )
