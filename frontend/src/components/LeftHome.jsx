@@ -106,15 +106,35 @@ const LeftHome = () => {
             <div className="h-px w-full bg-gradient-to-r from-transparent via-yellow-400 via-pink-500 to-transparent my-4"></div>
 
             {/* suggested user */}
-            <div className='w-full flex flex-col gap-[20px]  pl-3'>
+            {/* <div className='w-full flex flex-col gap-[20px]  pl-3'>
                 <h1 className="text-[20px] font-semibold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
                     Suggested Users
                 </h1>
                 {
-                    suggestedUsers?.slice(0, 6).map((user) => (
+                    suggestedUsers?.map((user) => (
                         <OtherUsers key={user._id} user={user} />
                     ))
                 }
+            </div> */}
+            {/* suggested user */}
+            {/* suggested user */}
+            <div className='w-full flex flex-col gap-[20px] pl-3 h-[60vh]'>
+
+                <h1 className="text-[20px] font-semibold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
+                    Suggested Users
+                </h1>
+
+                {/* SCROLLABLE LIST */}
+                <div className="flex flex-col gap-3 overflow-y-auto no-scrollbar pr-2">
+
+                    {
+                        suggestedUsers?.map((user) => (
+                            <OtherUsers key={user._id} user={user} />
+                        ))
+                    }
+
+                </div>
+
             </div>
 
 
