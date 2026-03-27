@@ -11,4 +11,4 @@ const RightHome = () => {
     )
 }
 
-export default RightHome
+export default RightHome   
