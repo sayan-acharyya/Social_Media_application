@@ -111,7 +111,7 @@ const LeftHome = () => {
                     Suggested Users
                 </h1>
                 {
-                    suggestedUsers?.slice(0, 5).map((user) => (
+                    suggestedUsers?.slice(0, 6).map((user) => (
                         <OtherUsers key={user._id} user={user} />
                     ))
                 }

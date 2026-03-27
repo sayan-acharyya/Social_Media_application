@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import axios from 'axios';
 import { serverUrl } from '../App';
 import { useDispatch, useSelector } from "react-redux"
@@ -12,12 +12,16 @@ import logo from "../assets/image4.png";
 import Nav from '../components/Nav';
 import { MdVerified } from "react-icons/md";
 import FollowButton from '../components/FollowButton';
+import Post from '../components/Post';
 
 
 const Profile = () => {
     const dispatch = useDispatch();
     const { userName } = useParams();
     const { profileData, userData } = useSelector(state => state.user);
+    const { postData } = useSelector(state => state.post);
+    const [activeTab, setActiveTab] = useState("posts");
+
     const navigate = useNavigate();
 
     const handleProfile = async () => {
@@ -64,6 +68,16 @@ const Profile = () => {
     ];
 
     const check = userData?.userName === profileData?.userName;
+
+    const userPosts = postData.filter(post =>
+        profileData?.posts?.includes(post._id)
+    );
+
+    const savedPosts = postData.filter(post =>
+        userData?.saved?.some(
+            s => (s._id || s).toString() === post._id.toString()
+        )
+    );
 
     return (
         <div className="w-full min-h-screen bg-black text-white">
@@ -226,17 +240,20 @@ const Profile = () => {
             <div className='w-full h-[80px] flex justify-center items-center gap-[20px]'>
                 {
                     check && (
-                        <button
-                            onClick={() => navigate("/editprofile")}
-                            className='px-[10px] min-w-[150px] py-[5px] h-[40px] 
+                        <>
+                            <button
+                                onClick={() => navigate("/editprofile")}
+                                className='px-[10px] min-w-[150px] py-[5px] h-[40px] 
       bg-gradient-to-r from-pink-500 to-yellow-400 
       text-white font-medium
       rounded-2xl cursor-pointer
       hover:bg-gray-100 hover:scale-105
       transition duration-200'
-                        >
-                            Edit Profile
-                        </button>
+                            >
+                                Edit Profile
+                            </button>
+
+                        </>
                     )
                 }
 
@@ -267,13 +284,124 @@ const Profile = () => {
 
             <div className='w-full min-h-[100vh] flex justify-center'>
                 <div className='w-full max-w-[900px] flex flex-col items-center 
-                rounded-t-[30px] bg-white relative gap-[20px] pt-[30px]'>
+                rounded-t-[30px] bg-white relative gap-[20px] pt-[30px] pb-[150px]'>
+
                     <Nav />
+
+                    {
+                        check && <div className="w-full flex justify-center mt-2">
+
+                            <div className="flex gap-6 border-b border-gray-200 w-[90%] max-w-[600px] justify-center">
+
+                                <div
+                                    onClick={() => setActiveTab("posts")}
+                                    className="relative pb-2 cursor-pointer"
+                                >
+                                    <span className={`text-[15px] font-semibold 
+                ${activeTab === "posts" ? "text-black" : "text-gray-400"}`}>
+                                        All Posts
+                                    </span>
+
+                                    {activeTab === "posts" && (
+                                        <div className="absolute left-0 bottom-0 w-full h-[2px] 
+                bg-gradient-to-r from-pink-500 to-yellow-400 rounded-full" />
+                                    )}
+                                </div>
+
+                                <div
+                                    onClick={() => setActiveTab("saved")}
+                                    className="relative pb-2 cursor-pointer"
+                                >
+                                    <span className={`text-[15px] font-semibold 
+                ${activeTab === "saved" ? "text-black" : "text-gray-400"}`}>
+                                        Saved
+                                    </span>
+
+                                    {activeTab === "saved" && (
+                                        <div className="absolute left-0 bottom-0 w-full h-[2px] 
+                bg-gradient-to-r from-pink-500 to-yellow-400 rounded-full" />
+                                    )}
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                    {/* ALL POSTS */}
+                    {
+                        activeTab === "posts" && (
+                            userPosts.length > 0 ? (
+                                userPosts.map((post, index) => (
+                                    <Post key={index} post={post} />
+                                ))
+                            ) : (
+                                <div className="w-full flex flex-col items-center justify-center py-20 gap-4">
+
+                                    {/* ICON */}
+                                    {check && <div className="w-[80px] h-[80px] flex items-center justify-center 
+            rounded-full border-2 border-gray-300">
+                                        <span className="text-4xl">📸</span>
+                                    </div>}
+
+
+
+
+                                    {check && <p className="text-sm text-gray-500 text-center max-w-[250px]">
+                                        Start sharing your moments with the world 🚀
+                                    </p>}
+                                    {!check && (
+                                        <p className="text-center max-w-[260px] leading-relaxed">
+                                            <span className="bg-gradient-to-r from-pink-500 to-yellow-500 bg-clip-text text-transparent font-semibold">
+                                                No posts yet
+                                            </span>
+                                            <br />
+                                            <span className="text-sm text-gray-500">
+                                                This user hasn’t shared anything yet
+                                            </span>
+                                        </p>
+                                    )}
+                                    {/* BUTTON → REDIRECT */}
+                                    {check && (
+                                        <button
+                                            onClick={() => navigate("/upload")}
+                                            className="mt-4 px-6 py-2 rounded-full 
+                    bg-gradient-to-r from-pink-500 to-yellow-400 
+                    text-white text-sm font-medium 
+                    hover:scale-105 transition"
+                                        >
+                                            Upload Your First Post
+                                        </button>
+                                    )}
+
+                                </div>
+                            )
+                        )
+                    }
+
+                    {/* SAVED POSTS */}
+                    {
+                        activeTab === "saved" && (
+                            savedPosts.length > 0 ? (
+                                savedPosts.map((post, index) => (
+                                    <Post key={index} post={post} />
+                                ))
+                            ) : (
+                                <p className="text-gray-500 mt-10">No saved posts</p>
+                            )
+                        )
+                    }
+
+
+
+
+
                 </div>
             </div>
-
         </div>
     )
 }
 
 export default Profile;
+
+

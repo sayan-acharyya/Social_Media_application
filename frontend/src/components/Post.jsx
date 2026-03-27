@@ -88,7 +88,7 @@ const Post = ({ post }) => {
 
     return (
         <div className='w-[90%] max-w-[500px] bg-white 
-        flex flex-col rounded-2xl shadow-lg overflow-hidden'>
+        flex flex-col rounded-2xl shadow-lg overflow-hidden text-black'>
 
             {/* HEADER */}
             <div className='w-full flex justify-between items-center px-4 py-3'>

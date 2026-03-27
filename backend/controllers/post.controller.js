@@ -59,7 +59,7 @@ export const getAllPosts = async (req, res) => {
             .populate("author", "name userName profileImage")
             .populate("comments.author", "name userName profileImage") // ✅ ADD THIS
             .sort({ createdAt: -1 });
-
+ 
         return res.status(200).json({
             success: true,
             message: "Posts fetched successfully",
