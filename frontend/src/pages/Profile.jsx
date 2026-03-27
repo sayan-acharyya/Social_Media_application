@@ -289,43 +289,39 @@ const Profile = () => {
                     <Nav />
 
                     {
-                        check && <div className="w-full flex justify-center mt-2">
+                        check && (
+                            <div className="w-full flex justify-center mt-4">
 
-                            <div className="flex gap-6 border-b border-gray-200 w-[90%] max-w-[600px] justify-center">
+                                <div className="flex bg-gray-100 rounded-full p-1 w-[90%] max-w-[500px]">
 
-                                <div
-                                    onClick={() => setActiveTab("posts")}
-                                    className="relative pb-2 cursor-pointer"
-                                >
-                                    <span className={`text-[15px] font-semibold 
-                ${activeTab === "posts" ? "text-black" : "text-gray-400"}`}>
+                                    {/* ALL POSTS */}
+                                    <div
+                                        onClick={() => setActiveTab("posts")}
+                                        className={`flex-1 text-center py-2 rounded-full cursor-pointer text-sm font-semibold transition-all duration-300
+                    ${activeTab === "posts"
+                                                ? "bg-white text-black shadow-md"
+                                                : "text-gray-500 hover:text-black"
+                                            }`}
+                                    >
                                         All Posts
-                                    </span>
+                                    </div>
 
-                                    {activeTab === "posts" && (
-                                        <div className="absolute left-0 bottom-0 w-full h-[2px] 
-                bg-gradient-to-r from-pink-500 to-yellow-400 rounded-full" />
-                                    )}
-                                </div>
-
-                                <div
-                                    onClick={() => setActiveTab("saved")}
-                                    className="relative pb-2 cursor-pointer"
-                                >
-                                    <span className={`text-[15px] font-semibold 
-                ${activeTab === "saved" ? "text-black" : "text-gray-400"}`}>
+                                    {/* SAVED POSTS */}
+                                    <div
+                                        onClick={() => setActiveTab("saved")}
+                                        className={`flex-1 text-center py-2 rounded-full cursor-pointer text-sm font-semibold transition-all duration-300
+                    ${activeTab === "saved"
+                                                ? "bg-white text-black shadow-md"
+                                                : "text-gray-500 hover:text-black"
+                                            }`}
+                                    >
                                         Saved
-                                    </span>
+                                    </div>
 
-                                    {activeTab === "saved" && (
-                                        <div className="absolute left-0 bottom-0 w-full h-[2px] 
-                bg-gradient-to-r from-pink-500 to-yellow-400 rounded-full" />
-                                    )}
                                 </div>
 
                             </div>
-
-                        </div>
+                        )
                     }
 
                     {/* ALL POSTS */}
