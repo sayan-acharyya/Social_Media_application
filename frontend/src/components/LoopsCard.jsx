@@ -9,9 +9,16 @@ const LoopsCard = ({ loop }) => {
             sm:border-l-2 sm:border-r-2 sm:border-b-0
             relative
         '>
-            <video ref={videoRef} />
+            <video
+                src={loop?.media}
+                ref={videoRef}
+                autoPlay
+                loop
+                muted
+                className='w-full max-h-full'
+            />
         </div>
     )
 }
-
+//40:48
 export default LoopsCard

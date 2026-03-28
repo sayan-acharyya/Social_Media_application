@@ -9,6 +9,7 @@ const Loops = () => {
     const navigate = useNavigate();
     const { loopData } = useSelector(state => state.loop)
 
+
     return (
         <div className='w-screen h-screen bg-black overflow-hidden flex flex-col items-center  '>
             <div className='w-full  flex items-center gap-4 py-4 px-4 top-[20px] pl-[30px]'>
@@ -22,10 +23,12 @@ const Loops = () => {
                 </h1>
             </div>
 
-            <div>
+            <div className='h-[100vh] overflow-y-scroll no-scrollbar snap-y snap-mandatory '>
                 {
                     loopData.map((loop, index) => (
-                        <LoopsCard loop={loop} key={index} />
+                        <div className='h-screen snap-start '>
+                            <LoopsCard loop={loop} key={index} />
+                        </div>
                     ))
                 }
             </div>
