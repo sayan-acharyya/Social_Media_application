@@ -312,7 +312,7 @@ const Profile = () => {
                                         className={`flex-1 text-center py-2 rounded-full cursor-pointer text-sm font-semibold transition-all duration-300
                     ${activeTab === "saved"
                                                 ? "bg-white text-black shadow-md"
-                                                : "text-gray-500 hover:text-black"
+                                                : "text-gray-600 hover:text-black"
                                             }`}
                                     >
                                         Saved

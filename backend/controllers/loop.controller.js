@@ -140,7 +140,7 @@ export const comment = async (req, res) => {
 
 export const getAllLoops = async (req, res) => {
     try {
-        const lopps = await Loop.find({})
+        const loops = await Loop.find({})
             .populate("author", "name userName profileImage")
             .populate("comments.author")
             .sort({ createdAt: -1 });
@@ -148,7 +148,7 @@ export const getAllLoops = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Posts fetched successfully",
-            lopps
+            loops
         });
 
     } catch (error) {

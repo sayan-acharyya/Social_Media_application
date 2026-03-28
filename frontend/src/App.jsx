@@ -16,17 +16,20 @@ import Profile from './pages/Profile.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 import Upload from './pages/Upload.jsx';
 import useGetAllPosts from './hooks/getAllPosts.jsx';
+import Loops from './pages/Loops.jsx';
+import getAllLoops from './hooks/getAllLoops.jsx';
 
 
 export const serverUrl = "http://localhost:8000/api"
 
 const App = () => {
 
-  getCurrentUser(); 
+  getCurrentUser();
   getSuggestedusers();
   useGetAllPosts();
+  getAllLoops();
 
-  
+
   return (
     <>
       <Routes>
@@ -88,6 +91,15 @@ const App = () => {
           element={
             <PrivateRoute>
               <Upload />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/loops"
+          element={
+            <PrivateRoute>
+              <Loops />
             </PrivateRoute>
           }
         />

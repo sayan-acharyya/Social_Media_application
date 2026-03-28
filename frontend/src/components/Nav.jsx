@@ -47,14 +47,14 @@ const Nav = () => {
             </Link>
 
             {/* Reels */}
-            <div className="relative group cursor-pointer">
+            <Link to="/loops" className="relative group cursor-pointer">
                 <RxVideo className='text-white w-[28px] h-[28px]' />
                 <span className="absolute bottom-[45px] left-1/2 -translate-x-1/2 
                 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 
                 group-hover:opacity-100 transition">
                     Reels
                 </span>
-            </div>
+            </Link>
 
             {/* Profile */}
             <Link
