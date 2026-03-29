@@ -51,7 +51,7 @@ export const uploadPost = async (req, res) => {
         });
     }
 };
-
+    
 // ✅ Get All Posts (Feed)
 export const getAllPosts = async (req, res) => {
     try {
