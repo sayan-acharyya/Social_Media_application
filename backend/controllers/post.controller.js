@@ -73,7 +73,7 @@ export const getAllPosts = async (req, res) => {
         });
     }
 };
-
+  
 // ✅ Like / Unlike Post
 export const like = async (req, res) => {
     try {
