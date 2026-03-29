@@ -286,7 +286,7 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
             </div>
         </div>
     )
-}
+}     
 
 export default LoopsCard;
 
