@@ -11,9 +11,12 @@ import { serverUrl } from '../App';
 import toast from 'react-hot-toast';
 import { setPostData } from '../redux/slices/postSlice';
 import { setLoopData } from '../redux/slices/loopSlice';
+import { FaChevronDown } from "react-icons/fa6";
 
 const LoopsCard = ({ loop, isMute, setIsMute }) => {
     const videoRef = useRef(null);
+    const commentRef = useRef(null);
+
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showComment, setShowComment] = useState(false);
@@ -83,6 +86,25 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
         };
     }, []);
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                commentRef.current &&
+                !commentRef.current.contains(event.target)
+            ) {
+                setShowComment(false);
+            }
+        };
+
+        if (showComment) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [showComment]);
+
     const dispatch = useDispatch();
 
     const handleLike = async () => {
@@ -135,13 +157,38 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
             border-b-2 border-gray-800
             sm:border-l-2 sm:border-r-2 sm:border-b-0
             relative bg-black
-        '>
+        '
+
+        >
             {/* show heart animattion */}
             {showHeart && (
                 <div className='absolute inset-0 flex items-center justify-center pointer-events-none'>
                     <GoHeartFill className='text-red-500 text-[90px] heart-animation drop-shadow-lg' />
                 </div>
             )}
+
+            {/* comment div */}
+            {showComment &&
+                <div
+                    ref={commentRef}
+                    className={`absolute z-[100] bottom-0 w-full h-[500px] 
+            p-[10px]   rounded-t-4xl transition-transform duration-500 ease-in-out bg-[#0e1718] left-0 ${showComment ? "translate-y-0" : "translate-y-[-100%]"}`}>
+
+                    {/* 🔽 Drag Handle */}
+                    <div
+                        onClick={() => setShowComment(false)}
+                        className='flex justify-center py-2 cursor-pointer'
+                    >
+                        <div className='w-[40px] h-[4px] bg-gray-500 rounded-full'></div>
+                    </div>
+
+                    {/* Title */}
+                    <h1 className='text-gray-200 text-[18px] text-center font-semibold mb-2'>
+                        Comments
+                    </h1>
+
+
+                </div>}
 
             <video
                 onDoubleClick={handleDoubleClick}
@@ -222,7 +269,8 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
                     {/* COMMENT */}
                     <div className="flex flex-col items-center gap-2 cursor-pointer group active:scale-90 transition">
                         <FaRegComment
-                            //  onClick={() => setShowComment(!showComment)}
+                            onClick={() => setShowComment(true)}
+
                             className="w-6 h-6 text-white  transition"
                         />
                         <span className="text-sm font-medium text-gray-100">
@@ -240,4 +288,6 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
     )
 }
 
-export default LoopsCard
+export default LoopsCard;
+
+//1:46:28
