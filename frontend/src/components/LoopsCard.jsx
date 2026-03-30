@@ -144,7 +144,7 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
             const updatedLoops = loopData.map(l => l._id == loop?._id ? updatedLoop : l);
             dispatch(setLoopData(updatedLoops));
             toast.success("Comment added 💬");
-            setShowComment(false);
+
             setMessage("");
         } catch (error) {
             toast.error(error.response?.data?.message);
@@ -207,7 +207,7 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
                     </h1>
 
                     {/* Comments List */}
-                    <div className="flex-1 overflow-y-auto no-scrollbar px-4 py-3 flex flex-col gap-4">
+                    {loop.comments.length > 0 ? <div className="flex-1 overflow-y-auto no-scrollbar px-4 py-3 flex flex-col gap-4">
 
                         {loop.comments?.map((comment, index) => (
                             <div key={index} className="flex items-start gap-3">
@@ -234,7 +234,7 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
                                     {/* Optional small meta */}
                                     <span className="text-xs text-gray-500 mt-1 ml-2  ">
                                         {formatTime(comment.createdAt)}
-                                        
+
                                     </span>
 
                                 </div>
@@ -242,7 +242,9 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
                             </div>
                         ))}
 
-                    </div>
+                    </div> : <div className="flex flex-col items-center justify-center h-full text-gray-400 italic">
+                        No comments yet. Be the first!
+                    </div>}
 
                     {/* Input Box */}
                     <div className="px-3 py-4     bg-[#0b0f10]">

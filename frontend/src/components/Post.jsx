@@ -291,99 +291,75 @@ const Post = ({ post }) => {
 
             </div>
 
-            {
-                openAllComments && (
-                    <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-sm bg-white/30">
+            {openAllComments && (
+                <div className="fixed inset-0 flex justify-center items-center z-50 backdrop-blur-md bg-black/40 p-4">
+                    <div className="w-full max-w-[500px] h-[80vh] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
 
-                        <div className="w-[95%] max-w-[550px] h-[85vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden">
-
-                            {/* Header */}
-                            <div className="flex justify-between items-center px-5 py-4 border-b bg-white sticky top-0 z-10">
-                                <h2 className="font-semibold text-lg">Comments</h2>
-                                <button
-                                    onClick={() => setOpenAllComments(false)}
-                                    className="text-gray-500 hover:text-black text-xl transition"
-                                >
-                                    ✕
-                                </button>
-                            </div>
-
-                            {/* Comments List */}
-                            <div className="flex-1 overflow-y-auto no-scrollbar px-5 py-4 flex flex-col gap-3 mb-5">
-
-                                {
-                                    post.comments?.map((comment, index) => (
-                                        <div key={index} className="flex  flex-col  items-start gap-2 bg-gray-50 p-3 rounded-2xl">
-
-
-
-
-                                            <div className="flex gap-2">
-                                                {/* Profile */}
-                                                <img
-                                                    onClick={() => navigate(`/profile/${comment?.author?.userName}`)}
-                                                    src={comment.author?.profileImage || dp}
-                                                    className="w-[40px] h-[40px] rounded-full object-cover border cursor-pointer"
-                                                />
-                                                {/* Username + Follow */}
-                                                <div className="flex items-center justify-between">
-
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-sm font-semibold text-gray-900">
-                                                            {comment.author?.userName}
-                                                        </span>
-
-                                                        <span className="text-xs text-gray-500">
-                                                            • {formatTime(comment.createdAt)}
-                                                        </span>
-                                                    </div>
-
-                                                    {/* Follow Button */}
-                                                    {comment.author?._id !== userData?._id &&
-
-
-
-
-
-                                                        <FollowButton
-                                                            targetUserId={comment.author?._id}
-                                                            tailwind={' text-xs font-semibold ml-3 px-3 py-1 rounded-lg  border border-blue-500 text-blue-700 transition'} />
-
-                                                    }
-                                                </div>
-
-
-
-                                            </div>
-
-                                            <div className="ml-7">
-                                                <p className="
-        text-sm 
-        text-gray-800 
-        leading-relaxed 
-        bg-gray-200 
-        px-3 py-2 
-        rounded-xl 
-        inline-block
-        max-w-full
-    ">
-                                                    {comment.message}
-                                                </p>
-                                            </div>
-
-                                        </div>
-                                    ))
-                                }
-
-                            </div>
-
-
-
+                        {/* Header */}
+                        <div className="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+                            <h2 className="font-bold text-xl text-gray-800">Comments</h2>
+                            <button
+                                onClick={() => setOpenAllComments(false)}
+                                className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-400 hover:text-gray-600"
+                            >
+                                <span className="text-2xl leading-none">×</span>
+                            </button>
                         </div>
 
+                        {/* Comments List */}
+                        <div className="flex-1 overflow-y-auto no-scrollbar px-6 py-4 flex flex-col gap-6 custom-scrollbar">
+                            {post.comments?.length > 0 ? (
+                                post.comments.map((comment, index) => (
+                                    <div key={index} className="flex gap-3 items-start group">
+                                        {/* Profile Image */}
+                                        <img
+                                            onClick={() => navigate(`/profile/${comment?.author?.userName}`)}
+                                            src={comment.author?.profileImage || dp}
+                                            alt="profile"
+                                            className="w-10 h-10 rounded-full object-cover border border-gray-100 cursor-pointer hover:opacity-90 transition"
+                                        />
+
+                                        <div className="flex flex-col flex-1 gap-1">
+                                            {/* User Info Bar */}
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span
+                                                        className="text-sm font-bold text-gray-900 cursor-pointer hover:underline"
+                                                        onClick={() => navigate(`/profile/${comment?.author?.userName}`)}
+                                                    >
+                                                        {comment.author?.userName}
+                                                    </span>
+                                                    <span className="text-[11px] font-medium text-gray-500  tracking-tighter">
+                                                        {formatTime(comment.createdAt)}
+                                                    </span>
+                                                </div>
+
+                                                {comment.author?._id !== userData?._id && (
+                                                    <FollowButton
+                                                        targetUserId={comment.author?._id}
+                                                        tailwind="text-[11px] font-bold text-blue-600 hover:text-blue-800 transition-colors cursor-pointer"
+                                                    />
+                                                )}
+                                            </div>
+
+                                            {/* Comment Content */}
+                                            <div className="text-sm text-gray-700 leading-snug bg-gray-200 rounded-2xl rounded-tl-none p-3 border border-gray-100 inline-block self-start max-w-[90%]">
+                                                {comment.message}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="flex flex-col items-center justify-center h-full text-gray-400 italic">
+                                    No comments yet. Be the first!
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Optional: Add a comment input footer here for better UX */}
                     </div>
-                )
-            }
+                </div>
+            )}
 
         </div>
     )
