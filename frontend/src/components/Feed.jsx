@@ -5,11 +5,11 @@ import StoryDp from "./StoryDp";
 import Nav from "./Nav";
 import { useSelector } from "react-redux";
 import Post from "./Post";
- 
+
 
 const Feed = () => {
     const { postData } = useSelector(state => state.post);
-
+    const { userData } = useSelector(state => state.user);
 
     return (
         <div className="lg:w-[50%] w-full bg-black h-screen relative overflow-y-auto no-scrollbar">
@@ -27,16 +27,12 @@ const Feed = () => {
 
             {/* story section */}
             <div className="flex w-full overflow-x-auto gap-[20px] items-center p-[20px] no-scrollbar">
-                <StoryDp userName={"vsdvfghmghmgmhgmhgmhgmhgmfdbv"} />
-                <StoryDp userName={"vsdvffdbv"} />
-                <StoryDp userName={"vsdvffdbv"} />
-                <StoryDp userName={"vsdvffdbv"} />
-                <StoryDp userName={"vsdvffdbv"} />
-                <StoryDp userName={"vsdvffdbv"} />
-                <StoryDp userName={"vsdvffdbv"} />
-                <StoryDp userName={"vsdvffdbv"} />
-                <StoryDp userName={"vsdvffdbv"} />
-                <StoryDp userName={"vsdvffdbv"} />
+                <StoryDp
+                    userName={"Your Story"}
+                    profileImage={userData?.profileImage}
+                    story={userData?.story}
+                />
+
             </div>
 
             {/* feed area */}
