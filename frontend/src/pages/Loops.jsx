@@ -8,7 +8,7 @@ const Loops = () => {
 
     const navigate = useNavigate();
     const { loopData } = useSelector(state => state.loop)
-    const [isMute, setIsMute] = useState(true);
+    const [isMute, setIsMute] = useState(false);
 
     return (
          <div className='w-screen h-screen bg-black overflow-hidden relative'>

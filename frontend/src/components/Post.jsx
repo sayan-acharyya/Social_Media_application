@@ -86,6 +86,19 @@ const Post = ({ post }) => {
 
     const navigate = useNavigate();
 
+    const formatTime = (time) => {
+        const now = new Date();
+        const past = new Date(time);
+        const diff = Math.floor((now - past) / 1000);
+
+        if (diff < 60) return "just now";
+        if (diff < 3600) return Math.floor(diff / 60) + " min ago";
+        if (diff < 86400) return Math.floor(diff / 3600) + " hr ago";
+        if (diff < 604800) return Math.floor(diff / 86400) + " days ago";
+
+        return past.toLocaleDateString(); // fallback
+    };
+
     return (
         <div className='w-[90%] max-w-[500px] bg-white 
         flex flex-col rounded-2xl shadow-lg overflow-hidden text-black'>
@@ -97,7 +110,7 @@ const Post = ({ post }) => {
 
                     {/* Profile */}
                     <div
-                       onClick={()=>navigate(`/profile/${post?.author?.userName}`)}
+                        onClick={() => navigate(`/profile/${post?.author?.userName}`)}
                         className="w-[45px] h-[45px] rounded-full overflow-hidden border">
                         <img
                             src={post.author?.profileImage || dp}
@@ -296,28 +309,66 @@ const Post = ({ post }) => {
                             </div>
 
                             {/* Comments List */}
-                            <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3">
+                            <div className="flex-1 overflow-y-auto no-scrollbar px-5 py-4 flex flex-col gap-3 mb-5">
 
                                 {
                                     post.comments?.map((comment, index) => (
-                                        <div key={index} className="flex items-center gap-3 bg-gray-200 p-3 rounded-2xl">
+                                        <div key={index} className="flex  flex-col  items-start gap-2 bg-gray-50 p-3 rounded-2xl">
 
-                                            {/* Profile */}
-                                            <img
-                                                src={comment.author?.profileImage || dp}
-                                                className="w-[40px] h-[40px] rounded-full object-cover border"
-                                            />
 
-                                            {/* Content */}
-                                            <div className="flex flex-col  ">
-                                                <span className="text-sm">
-                                                    <span className="font-semibold mr-1">
-                                                        {comment.author?.userName}
-                                                    </span>
+
+
+                                            <div className="flex gap-2">
+                                                {/* Profile */}
+                                                <img
+                                                    onClick={() => navigate(`/profile/${comment?.author?.userName}`)}
+                                                    src={comment.author?.profileImage || dp}
+                                                    className="w-[40px] h-[40px] rounded-full object-cover border cursor-pointer"
+                                                />
+                                                {/* Username + Follow */}
+                                                <div className="flex items-center justify-between">
+
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-sm font-semibold text-gray-900">
+                                                            {comment.author?.userName}
+                                                        </span>
+
+                                                        <span className="text-xs text-gray-500">
+                                                            • {formatTime(comment.createdAt)}
+                                                        </span>
+                                                    </div>
+
+                                                    {/* Follow Button */}
+                                                    {comment.author?._id !== userData?._id &&
+
+
+
+
+
+                                                        <FollowButton
+                                                            targetUserId={comment.author?._id}
+                                                            tailwind={' text-xs font-semibold ml-3 px-3 py-1 rounded-lg  border border-blue-500 text-blue-700 transition'} />
+
+                                                    }
+                                                </div>
+
+
+
+                                            </div>
+
+                                            <div className="ml-7">
+                                                <p className="
+        text-sm 
+        text-gray-800 
+        leading-relaxed 
+        bg-gray-200 
+        px-3 py-2 
+        rounded-xl 
+        inline-block
+        max-w-full
+    ">
                                                     {comment.message}
-                                                </span>
-
-
+                                                </p>
                                             </div>
 
                                         </div>

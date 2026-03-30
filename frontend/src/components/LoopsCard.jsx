@@ -12,12 +12,15 @@ import toast from 'react-hot-toast';
 import { setPostData } from '../redux/slices/postSlice';
 import { setLoopData } from '../redux/slices/loopSlice';
 import { FaChevronDown } from "react-icons/fa6";
+import { FiSend } from 'react-icons/fi';
+import { AiOutlineLike } from "react-icons/ai";
 
 const LoopsCard = ({ loop, isMute, setIsMute }) => {
     const videoRef = useRef(null);
     const commentRef = useRef(null);
 
     const [isPlaying, setIsPlaying] = useState(false);
+    const [message, setMessage] = useState("");
     const [progress, setProgress] = useState(0);
     const [showComment, setShowComment] = useState(false);
     const [showHeart, setShowHeart] = useState(false);
@@ -130,23 +133,36 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
         { !isLiked ? handleLike() : null }
     }
 
-    // const handleComment = async () => {
-    //     try {
-    //         const result = await axios.post(`${serverUrl}/post/comment/${post._id}`, { message },
-    //             { withCredentials: true }
-    //         );
+    const handleComment = async () => {
+        try {
+            const result = await axios.post(`${serverUrl}/loop/comment/${loop._id}`, { message },
+                { withCredentials: true }
+            );
 
-    //         const updatedPost = result.data.post;
+            const updatedLoop = result.data.loop;
 
-    //         const updatedPosts = postData.map(p => p._id == post?._id ? updatedPost : p);
-    //         dispatch(setPostData(updatedPosts));
-    //         toast.success("Comment added 💬");
-    //         setShowComment(false);
-    //         setMessage("");
-    //     } catch (error) {
-    //         toast.error(error.response?.data?.message);
-    //     }
-    // }
+            const updatedLoops = loopData.map(l => l._id == loop?._id ? updatedLoop : l);
+            dispatch(setLoopData(updatedLoops));
+            toast.success("Comment added 💬");
+            setShowComment(false);
+            setMessage("");
+        } catch (error) {
+            toast.error(error.response?.data?.message);
+        }
+    }
+
+    const formatTime = (time) => {
+        const now = new Date();
+        const past = new Date(time);
+        const diff = Math.floor((now - past) / 1000);
+
+        if (diff < 60) return "just now";
+        if (diff < 3600) return Math.floor(diff / 60) + " min ago";
+        if (diff < 86400) return Math.floor(diff / 3600) + " hr ago";
+        if (diff < 604800) return Math.floor(diff / 86400) + " days ago";
+
+        return past.toLocaleDateString(); // fallback
+    };
 
     return (
         <div
@@ -171,24 +187,99 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
             {showComment &&
                 <div
                     ref={commentRef}
-                    className={`absolute z-[100] bottom-0 w-full h-[500px] 
-            p-[10px]   rounded-t-4xl transition-transform duration-500 ease-in-out bg-[#0e1718] left-0 ${showComment ? "translate-y-0" : "translate-y-[-100%]"}`}>
+                    className={`absolute z-[100] bottom-0 w-full h-[85%]
+    flex flex-col
+    rounded-t-3xl transition-transform duration-500 ease-in-out 
+    bg-[#0b0f10] border-t border-gray-800
+    ${showComment ? "translate-y-0" : "translate-y-full"}`}>
 
                     {/* 🔽 Drag Handle */}
                     <div
                         onClick={() => setShowComment(false)}
-                        className='flex justify-center py-2 cursor-pointer'
+                        className='flex justify-center py-3 cursor-pointer'
                     >
-                        <div className='w-[40px] h-[4px] bg-gray-500 rounded-full'></div>
+                        <div className='w-[45px] h-[4px] bg-gray-600 rounded-full'></div>
                     </div>
 
                     {/* Title */}
-                    <h1 className='text-gray-200 text-[18px] text-center font-semibold mb-2'>
+                    <h1 className='text-gray-200 text-[17px] text-center font-semibold mb-2'>
                         Comments
                     </h1>
 
+                    {/* Comments List */}
+                    <div className="flex-1 overflow-y-auto no-scrollbar px-4 py-3 flex flex-col gap-4">
 
-                </div>}
+                        {loop.comments?.map((comment, index) => (
+                            <div key={index} className="flex items-start gap-3">
+
+                                {/* Profile */}
+                                <img
+                                    onClick={() => navigate(`/profile/${comment?.author?.userName}`)}
+                                    src={comment.author?.profileImage || dp}
+                                    className="w-[38px] h-[38px] rounded-full object-cover border border-gray-700"
+                                />
+
+                                {/* Content */}
+                                <div className="flex flex-col">
+
+                                    <div className="bg-[#151a1c] px-4 py-2 rounded-2xl max-w-[300px]">
+                                        <span className="text-sm text-gray-300">
+                                            <span className="font-semibold text-white mr-2">
+                                                {comment.author?.userName}
+                                            </span>
+                                            {comment.message}
+                                        </span>
+                                    </div>
+
+                                    {/* Optional small meta */}
+                                    <span className="text-xs text-gray-500 mt-1 ml-2  ">
+                                        {formatTime(comment.createdAt)}
+                                        
+                                    </span>
+
+                                </div>
+
+                            </div>
+                        ))}
+
+                    </div>
+
+                    {/* Input Box */}
+                    <div className="px-3 py-4     bg-[#0b0f10]">
+
+                        <div className="flex items-center gap-3 
+            bg-[#111] border border-gray-800 rounded-full px-3 py-2">
+
+                            {/* Profile */}
+                            <img
+                                src={userData?.profileImage || dp}
+                                className="w-[34px] h-[34px] rounded-full object-cover border border-gray-700"
+                            />
+
+                            {/* Input */}
+                            <input
+                                type="text"
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                placeholder="Write a comment..."
+                                className="flex-1 bg-transparent text-sm text-white
+                placeholder-gray-500 outline-none"
+                            />
+
+                            {/* Send */}
+                            <button
+                                onClick={handleComment}
+                                className="p-2 rounded-full bg-yellow-400 text-black
+                hover:bg-yellow-300 active:scale-90 transition"
+                            >
+                                <FiSend className="w-5 h-5" />
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+            }
 
             <video
                 onDoubleClick={handleDoubleClick}
@@ -286,7 +377,7 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
             </div>
         </div>
     )
-}     
+}
 
 export default LoopsCard;
 

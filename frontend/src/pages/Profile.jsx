@@ -290,37 +290,35 @@ const Profile = () => {
 
                     {
                         check && (
-                            <div className="w-full flex justify-center mt-4">
+                           <div className="w-full flex justify-center mt-4">
+  <div className="flex w-[90%] max-w-[500px] bg-gradient-to-r from-yellow-200 via-pink-100 to-pink-200 p-1 rounded-full shadow-md">
 
-                                <div className="flex bg-gray-100 rounded-full p-1 w-[90%] max-w-[500px]">
+    {/* ALL POSTS */}
+    <div
+      onClick={() => setActiveTab("posts")}
+      className={`flex-1 text-center py-2 rounded-full cursor-pointer text-sm font-semibold transition-all duration-300
+        ${activeTab === "posts"
+          ? "bg-gradient-to-r from-yellow-400 to-pink-500 text-white shadow-lg scale-105"
+          : "text-gray-700 hover:text-black"
+        }`}
+    >
+      All Posts
+    </div>
 
-                                    {/* ALL POSTS */}
-                                    <div
-                                        onClick={() => setActiveTab("posts")}
-                                        className={`flex-1 text-center py-2 rounded-full cursor-pointer text-sm font-semibold transition-all duration-300
-                    ${activeTab === "posts"
-                                                ? "bg-white text-black shadow-md"
-                                                : "text-gray-500 hover:text-black"
-                                            }`}
-                                    >
-                                        All Posts
-                                    </div>
+    {/* SAVED POSTS */}
+    <div
+      onClick={() => setActiveTab("saved")}
+      className={`flex-1 text-center py-2 rounded-full cursor-pointer text-sm font-semibold transition-all duration-300
+        ${activeTab === "saved"
+          ? "bg-gradient-to-r from-yellow-400 to-pink-500 text-white shadow-lg scale-105"
+          : "text-gray-700 hover:text-black"
+        }`}
+    >
+      Saved
+    </div>
 
-                                    {/* SAVED POSTS */}
-                                    <div
-                                        onClick={() => setActiveTab("saved")}
-                                        className={`flex-1 text-center py-2 rounded-full cursor-pointer text-sm font-semibold transition-all duration-300
-                    ${activeTab === "saved"
-                                                ? "bg-white text-black shadow-md"
-                                                : "text-gray-600 hover:text-black"
-                                            }`}
-                                    >
-                                        Saved
-                                    </div>
-
-                                </div>
-
-                            </div>
+  </div>
+</div>
                         )
                     }
 

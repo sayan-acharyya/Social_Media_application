@@ -78,6 +78,7 @@ export const like = async (req, res) => {
 
         await loop.save();
         await loop.populate("author", "name userName profileImage");
+        await loop.populate("comments.author", "name userName profileImage");
 
         return res.status(200).json({
             success: true,
