@@ -3,15 +3,17 @@ import dp from "../assets/dp.webp"
 import { FaPlus } from "react-icons/fa";
 import { BiPlusCircle } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const StoryDp = ({ profileImage, userName, story }) => {
 
     const navigate = useNavigate();
-
+    const { userData } = useSelector(state => state.user);
     const handleClick = () => {
         if (!story && userName === "Your Story") {
             navigate("/upload");
-        } else {
-
+        }
+        else if (story && userName === "Your Story") {
+            navigate(`/story/${userData?.userName}`);
         }
     }
 

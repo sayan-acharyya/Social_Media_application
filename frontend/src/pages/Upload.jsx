@@ -1,4 +1,4 @@
- import { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { FiLoader, FiPlus } from "react-icons/fi";
 import { MdOutlineKeyboardBackspace } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPostData } from "../redux/slices/postSlice";
 import { setLoopData } from "../redux/slices/loopSlice";
 import { setStoryData } from "../redux/slices/storySlice";
+import { setUserData } from "../redux/slices/userSlice";
 
 const Upload = () => {
     const navigate = useNavigate();
@@ -87,9 +88,8 @@ const Upload = () => {
             const res = await axios.post(`${serverUrl}/story/upload`, formData, {
                 withCredentials: true
             });
-
+            setUserData((prev) => ({ ...prev, story: res.data.populatedStory }))
             toast.success(res.data.message || "Story Uploaded");
-            dispatch(setStoryData([res.data.populatedStory, ...storyData]));
 
         } catch (error) {
             toast.error(error.response?.data?.message || "Story error");
