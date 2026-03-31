@@ -4,6 +4,7 @@ import axios from 'axios';
 import { serverUrl } from '../App';
 import { setProfileData, toggleFollow, setUserData } from '../redux/slices/userSlice';
 import toast from 'react-hot-toast';
+import getAllStories from '../hooks/getAllStories';
 
 const FollowButton = ({ targetUserId, tailwind }) => {
     const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const FollowButton = ({ targetUserId, tailwind }) => {
             }));
 
             toast.success(result.data.message);
-
+              
         } catch (error) {
             toast.error(error.response?.data?.message);
         }

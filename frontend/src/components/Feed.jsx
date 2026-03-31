@@ -11,6 +11,9 @@ const Feed = () => {
     const { postData } = useSelector(state => state.post);
     const { userData } = useSelector(state => state.user);
 
+    const { storyList } = useSelector(state => state.story);
+
+
     return (
         <div className="lg:w-[50%] w-full bg-black h-screen relative overflow-y-auto no-scrollbar">
 
@@ -32,7 +35,14 @@ const Feed = () => {
                     profileImage={userData?.profileImage}
                     story={userData?.story}
                 />
-
+                {storyList.map((story, i) => (
+                    <StoryDp
+                        key={i}
+                        userName={story.author.userName}
+                        profileImage={story.author.profileImage}
+                        story={story}
+                    />
+                ))}
             </div>
 
             {/* feed area */}
