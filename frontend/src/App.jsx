@@ -19,6 +19,7 @@ import useGetAllPosts from './hooks/getAllPosts.jsx';
 import Loops from './pages/Loops.jsx';
 import getAllLoops from './hooks/getAllLoops.jsx';
 import Story from './pages/Story.jsx';
+import getAllStories from './hooks/getAllStories.jsx';
 
 
 export const serverUrl = "http://localhost:8000/api"
@@ -29,6 +30,7 @@ const App = () => {
   getSuggestedusers();
   useGetAllPosts();
   getAllLoops();
+  getAllStories();
 
 
   return (

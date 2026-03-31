@@ -91,6 +91,7 @@ const Upload = () => {
             setUserData((prev) => ({ ...prev, story: res.data.populatedStory }))
             toast.success(res.data.message || "Story Uploaded");
 
+
         } catch (error) {
             toast.error(error.response?.data?.message || "Story error");
         }
@@ -141,7 +142,9 @@ const Upload = () => {
             setMediaType("");
 
             navigate("/");
-
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         } catch {
             toast.error("Upload failed");
         }

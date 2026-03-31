@@ -3,14 +3,18 @@ import { createSlice } from "@reduxjs/toolkit"
 const storySlice = createSlice({
     name: "storySlice",
     initialState: {
-        storyData: []
+        storyData: [],
+        storyList: []
     },
     reducers: {
         setStoryData: (state, action) => {
             state.storyData = action.payload;
+        },
+        setStoryList: (state, action) => {
+            state.storyList = action.payload;
         }
     }
 })
 
-export const { setStoryData } = storySlice.actions;
+export const { setStoryData, setStoryList } = storySlice.actions;
 export default storySlice.reducer;

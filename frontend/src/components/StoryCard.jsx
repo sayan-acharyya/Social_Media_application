@@ -8,89 +8,94 @@ import VideoPlayer from './VideoPlayer';
 const StoryCard = () => {
 
     const { storyData } = useSelector(state => state.story);
-
     const navigate = useNavigate();
 
+    const [index, setIndex] = useState(0);
     const [progress, setProgress] = useState(0);
 
+    const story = storyData?.[index];
+
+    // ✅ AUTO NEXT STORY
     useEffect(() => {
+        if (!story) return;
+
         const interval = setInterval(() => {
             setProgress(prev => {
 
                 if (prev >= 100) {
                     clearInterval(interval);
-                    navigate("/");
-                    return 100;
+
+                    // move to next story
+                    if (index < storyData.length - 1) {
+                        setIndex(prev => prev + 1);
+                        return 0;
+                    } else {
+                        navigate("/");
+                        return 100;
+                    }
                 }
 
-
-                return prev + 1
+                return prev + 1;
             });
-            return () => clearInterval(interval)
-        }, 150)
-    }, [navigate])
+        }, 150);
+
+        return () => clearInterval(interval);
+    }, [index, storyData, navigate]);
+
+    if (!story) return null;
 
     return (
-        <div className=' w-full max-w-[500px] h-[100vh] border-x-2 border-gray-800 
-    pt-[10px] relative flex flex-col justify-center '>
+        <div className='w-full max-w-[500px] h-[100vh] border-x-2 border-gray-800 
+        pt-[10px] relative flex flex-col justify-center bg-black'>
 
-
-            {/* info */}
+            {/* INFO */}
             <div className='flex items-center gap-[10px] absolute top-[30px] px-[10px]'>
+
                 <MdOutlineKeyboardBackspace
-                    className='text-white cursor-pointer cursor-pointer w-[25px] h-[25px] '
+                    className='text-white cursor-pointer w-[25px] h-[25px]'
                     onClick={() => navigate(-1)}
                 />
-                <div className='w-[30px] h-[30px] md:w-[40px] md:h-[40px] 
-                border-2 border-black rounded-full cursor-pointer overflow-hidden'>
+
+                <div className='w-[35px] h-[35px] rounded-full overflow-hidden'>
                     <img
-                        src={storyData?.author?.profileImage || dp}
-                        alt=""
-                        className='w-full object-center'
+                        src={story?.author?.profileImage || dp}
+                        className='w-full h-full object-cover'
                     />
                 </div>
 
-                <div className='w-[120px] font-semibold truncate text-white'>
-                    {storyData?.author?.userName}
+                <div className='text-white font-semibold'>
+                    {story?.author?.userName}
                 </div>
             </div>
 
-            {/* media */}
-            <div className='w-full h-[90%] flex items-center justify-center text-white'>
-                {storyData.mediaType === 'image' &&
-                    <div className='w-[90%] flex items-center justify-center'>
-                        <img
-                            src={storyData?.media}
-                            alt=""
-                            className='w-[80%] rounded-2xl object-cover'
-                        />
-                    </div>}
+            {/* MEDIA */}
+            <div className='w-full h-[90%] flex items-center justify-center'>
 
-                {storyData.mediaType === 'video' &&
-                    <div className='w-[80%] flex flex-col items-center justify-center'>
-                        <VideoPlayer media={storyData?.media} />
-                    </div>}
+                {story?.mediaType === 'image' && (
+                    <img
+                        src={story?.media}
+                        className='w-[80%] rounded-2xl object-cover'
+                    />
+                )}
+
+                {story?.mediaType === 'video' && (
+                    <div className='w-[80%]'>
+                        <VideoPlayer media={story?.media} />
+                    </div>
+                )}
+
             </div>
 
-
-
-
-            {/* progress bar */}
-            <div className='absolute  top-[10px]   w-full h-[5px] bg-gray-900'>
+            {/* PROGRESS BAR */}
+            <div className='absolute top-[10px] w-full h-[4px] bg-gray-800'>
                 <div
                     style={{ width: `${progress}%` }}
-                    className='w-[200px] h-full bg-white transition-all 
-                duration-200 ease-linear'>
-
-                </div>
+                    className='h-full bg-white transition-all duration-150'
+                />
             </div>
+
         </div>
     )
 }
 
 export default StoryCard;
-
-
-
-
-

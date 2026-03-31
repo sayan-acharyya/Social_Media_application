@@ -119,4 +119,26 @@ export const getStoryByUserName = async (req, res) => {
             message: `error in getStoryByUserName ${error}`
         })
     }
-} 
+}
+
+export const getAllStories = async (req, res) => {
+    try {
+        const currentUser = await User.findById(req.userId);
+        const followingIds = currentUser.following
+
+        const stories = await Story.find({
+            author: { $in: followingIds }
+        }).populate("viewers author").sort({ createdAt: -1 })
+
+
+        return res.status(200).json({
+            success: true,
+            stories
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: `error in getAllStories ${error}`
+        })
+    }
+}

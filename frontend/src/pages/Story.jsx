@@ -18,7 +18,7 @@ const Story = () => {
                 { withCredentials: true }
             )
 
-            dispatch(setStoryData(result.data.story[0]));
+           dispatch(setStoryData(result.data.story));
            
             
         } catch (error) {
