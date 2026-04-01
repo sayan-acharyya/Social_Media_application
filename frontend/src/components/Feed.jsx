@@ -11,7 +11,7 @@ const Feed = () => {
     const { postData } = useSelector(state => state.post);
     const { userData } = useSelector(state => state.user);
 
-    const { storyList } = useSelector(state => state.story);
+    const { storyList, currentUserStory } = useSelector(state => state.story);
 
 
     return (
@@ -35,7 +35,7 @@ const Feed = () => {
                     profileImage={userData?.profileImage}
                     story={userData?.story}
                 />
-                {storyList.map((story, i) => (
+                {storyList?.map((story, i) => (
                     <StoryDp
                         key={i}
                         userName={story.author.userName}

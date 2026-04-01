@@ -88,6 +88,7 @@ const Upload = () => {
             const res = await axios.post(`${serverUrl}/story/upload`, formData, {
                 withCredentials: true
             });
+           // dispatch(setCurrentUserStory(res.data.populatedStory))
             setUserData((prev) => ({ ...prev, story: res.data.populatedStory }))
             toast.success(res.data.message || "Story Uploaded");
 

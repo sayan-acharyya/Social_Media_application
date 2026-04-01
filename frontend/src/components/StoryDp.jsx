@@ -4,20 +4,40 @@ import { FaPlus } from "react-icons/fa";
 import { BiPlusCircle } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { serverUrl } from '../App';
 const StoryDp = ({ profileImage, userName, story }) => {
 
     const navigate = useNavigate();
     const { userData } = useSelector(state => state.user);
+
+    const handleViewers = async () => {
+        try {
+            const result = await axios.get(`${serverUrl}/story/view/${story._id}`,
+                { withCredentials: true })
+
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
     const handleClick = () => {
         if (!story && userName === "Your Story") {
             navigate("/upload");
         }
         else if (story && userName === "Your Story") {
+            
             navigate(`/story/${userData?.userName}`);
-        }else if(story && userName !== "Your Story"){
+
+        } else if (story && userName !== "Your Story") {
+            handleViewers();
             navigate(`/story/${userName}`);
+
         }
     }
+
 
 
     return (
@@ -58,4 +78,3 @@ const StoryDp = ({ profileImage, userName, story }) => {
 
 export default StoryDp;
 
-//2:17:55

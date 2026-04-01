@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { setFollowing, setUserData } from '../redux/slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { serverUrl } from '../App';
+import { setCurrentUserStory } from '../redux/slices/storySlice';
 
 const getCurrentUser = () => {
     const dispatch = useDispatch();
@@ -20,7 +21,8 @@ const getCurrentUser = () => {
                 );
 
                 dispatch(setUserData(res.data.user));
-                dispatch(setFollowing(res.data.user.following))
+                dispatch(setFollowing(res.data.user.following));
+                 
             } catch (error) {
                 console.log(error);
 

@@ -8,19 +8,22 @@ import StoryCard from '../components/StoryCard';
 
 const Story = () => {
     const { userName } = useParams();
+
+
     const dispatch = useDispatch();
 
     const { storyData } = useSelector(state => state.story);
 
     const handleStory = async () => {
+        dispatch(setStoryData(null))
         try {
             const result = await axios.get(`${serverUrl}/story/getByUserName/${userName}`,
                 { withCredentials: true }
             )
 
-           dispatch(setStoryData(result.data.story));
-           
-            
+            dispatch(setStoryData(result.data.story));
+
+
         } catch (error) {
             console.log(error);
 
@@ -35,7 +38,7 @@ const Story = () => {
 
     return (
         <div className='w-full h-[100vh] bg-black flex justify-center items-center '>
-            <StoryCard   />
+            <StoryCard storyData={storyData} />
         </div>
     )
 }
