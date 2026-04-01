@@ -13,7 +13,7 @@ import Nav from '../components/Nav';
 import { MdVerified } from "react-icons/md";
 import FollowButton from '../components/FollowButton';
 import Post from '../components/Post';
-
+import FollowersModal from "../components/FollowersModal";
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -21,6 +21,8 @@ const Profile = () => {
     const { profileData, userData } = useSelector(state => state.user);
     const { postData } = useSelector(state => state.post);
     const [activeTab, setActiveTab] = useState("posts");
+    const [openModal, setOpenModal] = useState(false);
+    const [modalType, setModalType] = useState(""); // followers / following
 
     const navigate = useNavigate();
 
@@ -189,7 +191,13 @@ const Profile = () => {
                 </div>
 
                 {/* FOLLOWERS */}
-                <div className="flex flex-col items-center gap-1">
+                <div
+
+                    onClick={() => {
+                        setModalType("followers");
+                        setOpenModal(true);
+                    }}
+                    className="flex flex-col items-center gap-1 cursor-pointer">
 
                     <div className="flex items-center gap-2">
                         <div className="flex -space-x-3">
@@ -212,7 +220,13 @@ const Profile = () => {
                 </div>
 
                 {/* FOLLOWING */}
-                <div className="flex flex-col items-center gap-1">
+                <div
+
+                    onClick={() => {
+                        setModalType("following");
+                        setOpenModal(true);
+                    }}
+                    className="flex flex-col items-center gap-1 cursor-pointer">
 
                     <div className="flex items-center gap-2">
                         <div className="flex -space-x-3">
@@ -290,35 +304,35 @@ const Profile = () => {
 
                     {
                         check && (
-                           <div className="w-full flex justify-center mt-4">
-  <div className="flex w-[90%] max-w-[500px] bg-gradient-to-r from-yellow-200 via-pink-100 to-pink-200 p-1 rounded-full shadow-md">
+                            <div className="w-full flex justify-center mt-4">
+                                <div className="flex w-[90%] max-w-[500px] bg-gradient-to-r from-yellow-200 via-pink-100 to-pink-200 p-1 rounded-full shadow-md">
 
-    {/* ALL POSTS */}
-    <div
-      onClick={() => setActiveTab("posts")}
-      className={`flex-1 text-center py-2 rounded-full cursor-pointer text-sm font-semibold transition-all duration-300
+                                    {/* ALL POSTS */}
+                                    <div
+                                        onClick={() => setActiveTab("posts")}
+                                        className={`flex-1 text-center py-2 rounded-full cursor-pointer text-sm font-semibold transition-all duration-300
         ${activeTab === "posts"
-          ? "bg-gradient-to-r from-yellow-400 to-pink-500 text-white shadow-lg scale-105"
-          : "text-gray-700 hover:text-black"
-        }`}
-    >
-      All Posts
-    </div>
+                                                ? "bg-gradient-to-r from-yellow-400 to-pink-500 text-white shadow-lg scale-105"
+                                                : "text-gray-700 hover:text-black"
+                                            }`}
+                                    >
+                                        All Posts
+                                    </div>
 
-    {/* SAVED POSTS */}
-    <div
-      onClick={() => setActiveTab("saved")}
-      className={`flex-1 text-center py-2 rounded-full cursor-pointer text-sm font-semibold transition-all duration-300
+                                    {/* SAVED POSTS */}
+                                    <div
+                                        onClick={() => setActiveTab("saved")}
+                                        className={`flex-1 text-center py-2 rounded-full cursor-pointer text-sm font-semibold transition-all duration-300
         ${activeTab === "saved"
-          ? "bg-gradient-to-r from-yellow-400 to-pink-500 text-white shadow-lg scale-105"
-          : "text-gray-700 hover:text-black"
-        }`}
-    >
-      Saved
-    </div>
+                                                ? "bg-gradient-to-r from-yellow-400 to-pink-500 text-white shadow-lg scale-105"
+                                                : "text-gray-700 hover:text-black"
+                                            }`}
+                                    >
+                                        Saved
+                                    </div>
 
-  </div>
-</div>
+                                </div>
+                            </div>
                         )
                     }
 
@@ -392,6 +406,16 @@ const Profile = () => {
 
                 </div>
             </div>
+            <FollowersModal
+                open={openModal}
+                setOpen={setOpenModal}
+                title={modalType}
+                data={
+                    modalType === "followers"
+                        ? profileData?.followers
+                        : profileData?.following
+                }
+            />
         </div>
     )
 }

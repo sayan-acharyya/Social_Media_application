@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FiHeart } from "react-icons/fi";
 import logo from "../assets/image4.png";
 import StoryDp from "./StoryDp";
 import Nav from "./Nav";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Post from "./Post";
+import { serverUrl } from "../App";
+import { setCurrentUserStory, setStoryList } from "../redux/slices/storySlice";
+import axios from "axios";
+
 
 
 const Feed = () => {
     const { postData } = useSelector(state => state.post);
     const { userData } = useSelector(state => state.user);
 
-    const { storyList, currentUserStory } = useSelector(state => state.story);
+
+
+
 
 
     return (
@@ -33,16 +39,40 @@ const Feed = () => {
                 <StoryDp
                     userName={"Your Story"}
                     profileImage={userData?.profileImage}
-                    story={userData?.story}
+
                 />
-                {storyList?.map((story, i) => (
-                    <StoryDp
-                        key={i}
-                        userName={story.author.userName}
-                        profileImage={story.author.profileImage}
-                        story={story}
-                    />
-                ))}
+                <StoryDp
+                    userName={"Your Story"}
+                    profileImage={userData?.profileImage}
+                />
+                <StoryDp
+                    userName={"Your Story"}
+                    profileImage={userData?.profileImage}
+                />
+                <StoryDp
+                    userName={"Your Story"}
+                    profileImage={userData?.profileImage}
+                />
+                <StoryDp
+                    userName={"Your Story"}
+                    profileImage={userData?.profileImage}
+                />
+                <StoryDp
+                    userName={"Your Story"}
+                    profileImage={userData?.profileImage}
+                />
+                <StoryDp
+                    userName={"Your Story"}
+                    profileImage={userData?.profileImage}
+                />
+                <StoryDp
+                    userName={"Your Story"}
+                    profileImage={userData?.profileImage}
+                /><StoryDp
+                    userName={"Your Story"}
+                    profileImage={userData?.profileImage}
+                />
+
             </div>
 
             {/* feed area */}

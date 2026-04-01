@@ -100,7 +100,10 @@ export const getProfile = async (req, res) => {
     try {
         const userName = req.params.userName;
 
-        const user = await User.findOne({ userName }).select("-password");
+        const user = await User.findOne({ userName })
+            .select("-password")
+            .populate("followers", "userName profileImage name")
+            .populate("following", "userName profileImage name");
 
         if (!user) {
             return res.status(404).json({

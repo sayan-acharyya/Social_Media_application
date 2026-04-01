@@ -1,54 +1,18 @@
 import React from 'react'
 import dp from "../assets/dp.webp"
 import { FaPlus } from "react-icons/fa";
-import { BiPlusCircle } from "react-icons/bi";
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { serverUrl } from '../App';
+ 
 const StoryDp = ({ profileImage, userName, story }) => {
-
-    const navigate = useNavigate();
-    const { userData } = useSelector(state => state.user);
-
-    const handleViewers = async () => {
-        try {
-            const result = await axios.get(`${serverUrl}/story/view/${story._id}`,
-                { withCredentials: true })
-
-
-        } catch (error) {
-            console.log(error);
-
-        }
-    }
-
-    const handleClick = () => {
-        if (!story && userName === "Your Story") {
-            navigate("/upload");
-        }
-        else if (story && userName === "Your Story") {
-            
-            navigate(`/story/${userData?.userName}`);
-
-        } else if (story && userName !== "Your Story") {
-            handleViewers();
-            navigate(`/story/${userName}`);
-
-        }
-    }
-
-
-
+ 
+ 
     return (
         <div
 
             className="flex flex-col items-center w-[75px]">
 
             <div
-                onClick={handleClick}
-                className={`p-[3px] rounded-full 
-                ${story ? "bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600" : ""} relative`}>
+               
+                className={`p-[3px] rounded-full  bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 relative`}>
                 <div className="w-[75px] h-[75px] rounded-full overflow-hidden border-2 border-black ">
                     <img
                         src={profileImage || dp}
@@ -59,13 +23,7 @@ const StoryDp = ({ profileImage, userName, story }) => {
 
 
                 </div>
-                {!story && userName === "Your Story" &&
-                    <div>
-                        <FaPlus
-                            onClick={() => navigate("/upload")}
-                            className='cursor-pointer    absolute right-1 top-14 text-xl bg-white text-black rounded-full p-1' />
-                    </div>
-                }
+                 
             </div>
 
             <div className="text-[14px] text-center truncate w-full text-white">

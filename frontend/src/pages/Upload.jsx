@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setPostData } from "../redux/slices/postSlice";
 import { setLoopData } from "../redux/slices/loopSlice";
-import { setStoryData } from "../redux/slices/storySlice";
+import { setCurrentUserStory, setStoryData } from "../redux/slices/storySlice";
 import { setUserData } from "../redux/slices/userSlice";
 
 const Upload = () => {
@@ -78,6 +78,8 @@ const Upload = () => {
     };
 
     // 📤 Upload Story (no caption)
+
+
     const uploadStory = async () => {
         setLoading(true);
         try {
@@ -88,7 +90,14 @@ const Upload = () => {
             const res = await axios.post(`${serverUrl}/story/upload`, formData, {
                 withCredentials: true
             });
-           // dispatch(setCurrentUserStory(res.data.populatedStory))
+            // console.log("Before dispatch");
+            // setCurrentUserStory([res.data.populatedStory]);
+            // console.log("After dispatch");
+            // dispatch(setCurrentUserStory([res.data.populatedStory]));
+
+            //    const storyArr = [res.data.populatedStory];
+
+            //      dispatch(setCurrentUserStory(storyArr));
             setUserData((prev) => ({ ...prev, story: res.data.populatedStory }))
             toast.success(res.data.message || "Story Uploaded");
 
@@ -98,6 +107,33 @@ const Upload = () => {
         }
         setLoading(false);
     };
+
+
+    // const uploadStory = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const formData = new FormData();
+    //         formData.append("mediaType", mediaType);
+    //         formData.append("media", backendMedia);
+
+    //         const res = await axios.post(`${serverUrl}/story/upload`, formData, {
+    //             withCredentials: true
+    //         });
+
+    //         const storyArr = [res.data.populatedStory];
+
+    //         dispatch(setCurrentUserStory(storyArr));
+
+    //         console.log("DISPATCHED:", storyArr); // ✅ check here
+
+    //         toast.success(res.data.message || "Story Uploaded");
+
+    //     } catch (error) {
+    //         console.log(error);
+    //         toast.error(error.response?.data?.message || "Story error");
+    //     }
+    //     setLoading(false);
+    // };
 
     // 📤 Upload Loop (video only)
     const uploadLoop = async () => {
@@ -141,11 +177,8 @@ const Upload = () => {
             setBackendMedia(null);
             setCaption("");
             setMediaType("");
-
             navigate("/");
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
+            window.location.reload();
         } catch {
             toast.error("Upload failed");
         }
