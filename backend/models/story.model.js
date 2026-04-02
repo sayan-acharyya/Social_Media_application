@@ -28,10 +28,10 @@ const storySchema = new mongoose.Schema(
 
         createdAt: {
             type: Date,
-            default: Date.now,
-           expires: 86400  
+            default: Date.now(),
+            expires: 86400
         }
- 
+
     });
 
 const Story = mongoose.model("Story", storySchema);

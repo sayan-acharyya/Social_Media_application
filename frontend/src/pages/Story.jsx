@@ -15,7 +15,7 @@ const Story = () => {
     const { storyData } = useSelector(state => state.story);
 
     const handleStory = async () => {
-        dispatch(setStoryData(null))
+         
         try {
             const result = await axios.get(`${serverUrl}/story/getByUserName/${userName}`,
                 { withCredentials: true }

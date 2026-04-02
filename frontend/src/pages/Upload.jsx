@@ -90,14 +90,7 @@ const Upload = () => {
             const res = await axios.post(`${serverUrl}/story/upload`, formData, {
                 withCredentials: true
             });
-            // console.log("Before dispatch");
-            // setCurrentUserStory([res.data.populatedStory]);
-            // console.log("After dispatch");
-            // dispatch(setCurrentUserStory([res.data.populatedStory]));
-
-            //    const storyArr = [res.data.populatedStory];
-
-            //      dispatch(setCurrentUserStory(storyArr));
+             
             setUserData((prev) => ({ ...prev, story: res.data.populatedStory }))
             toast.success(res.data.message || "Story Uploaded");
 
@@ -178,7 +171,7 @@ const Upload = () => {
             setCaption("");
             setMediaType("");
             navigate("/");
-            window.location.reload();
+            // window.location.reload();
         } catch {
             toast.error("Upload failed");
         }

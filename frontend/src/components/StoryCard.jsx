@@ -1,9 +1,9 @@
- import React from 'react'
- 
- const StoryCard = () => {
-   return (
-     <div>StoryCard</div>
-   )
- }
- 
- export default StoryCard
+import React from 'react'
+
+const StoryCard = ({ storyData }) => {
+  return (
+    <div>StoryCard</div>
+  )
+}
+
+export default StoryCard

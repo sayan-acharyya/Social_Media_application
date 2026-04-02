@@ -39,38 +39,7 @@ const Feed = () => {
                 <StoryDp
                     userName={"Your Story"}
                     profileImage={userData?.profileImage}
-
-                />
-                <StoryDp
-                    userName={"Your Story"}
-                    profileImage={userData?.profileImage}
-                />
-                <StoryDp
-                    userName={"Your Story"}
-                    profileImage={userData?.profileImage}
-                />
-                <StoryDp
-                    userName={"Your Story"}
-                    profileImage={userData?.profileImage}
-                />
-                <StoryDp
-                    userName={"Your Story"}
-                    profileImage={userData?.profileImage}
-                />
-                <StoryDp
-                    userName={"Your Story"}
-                    profileImage={userData?.profileImage}
-                />
-                <StoryDp
-                    userName={"Your Story"}
-                    profileImage={userData?.profileImage}
-                />
-                <StoryDp
-                    userName={"Your Story"}
-                    profileImage={userData?.profileImage}
-                /><StoryDp
-                    userName={"Your Story"}
-                    profileImage={userData?.profileImage}
+                    story={userData?.story}
                 />
 
             </div>
