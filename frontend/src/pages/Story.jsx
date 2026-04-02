@@ -15,13 +15,13 @@ const Story = () => {
     const { storyData } = useSelector(state => state.story);
 
     const handleStory = async () => {
-         
+
         try {
             const result = await axios.get(`${serverUrl}/story/getByUserName/${userName}`,
                 { withCredentials: true }
             )
 
-            dispatch(setStoryData(result.data.story));
+            dispatch(setStoryData(result.data.story[0]));
 
 
         } catch (error) {
@@ -38,7 +38,7 @@ const Story = () => {
 
     return (
         <div className='w-full h-[100vh] bg-black flex justify-center items-center '>
-            <StoryCard storyData={storyData} />
+            <StoryCard   />
         </div>
     )
 }

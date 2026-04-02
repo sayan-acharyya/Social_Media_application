@@ -2,14 +2,19 @@ import React from 'react'
 import dp from "../assets/dp.webp"
 import { FaPlus } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const StoryDp = ({ profileImage, userName, story }) => {
 
     const navigate = useNavigate();
+    const { userData } = useSelector(state => state.user);
 
     const handleClick = () => {
         if (!story && userName === "Your Story") {
             navigate("/upload");
+        }
+        else if (story && userName === "Your Story") {
+            navigate(`/story/${userData?.userName}`);
         }
     }
 
@@ -46,4 +51,8 @@ const StoryDp = ({ profileImage, userName, story }) => {
 }
 
 export default StoryDp;
+
+
+
+//3:02:00
 
