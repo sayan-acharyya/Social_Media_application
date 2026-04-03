@@ -1,24 +1,57 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import dp from "../assets/dp.webp"
 import { FaPlus } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { serverUrl } from '../App';
 
 const StoryDp = ({ profileImage, userName, story }) => {
 
     const navigate = useNavigate();
     const { userData } = useSelector(state => state.user);
+    const { storyData, storyList } = useSelector(state => state.story);
+    const [viewed, setViewed] = useState(false);
 
-    const handleClick = () => {
+
+
+
+
+
+
+    const handleViewer = async () => {
+        try {
+            const result = await axios.get(`${serverUrl}/story/view/${story._id}`,
+                { withCredentials: true }
+            );
+
+        } catch (error) {
+            console.log(error);
+
+        }
+
+    }
+    const handleClick = async () => {
         if (!story && userName === "Your Story") {
             navigate("/upload");
-        }
-        else if (story && userName === "Your Story") {
-            navigate(`/story/${userData?.userName}`);
         } else {
-            navigate(`/story/${userName}`);
+            await handleViewer();
+            setViewed(true); // ✅ instant UI update
+
+            if (userName === "Your Story") {
+                navigate(`/story/${userData?.userName}`);
+            } else {
+                navigate(`/story/${userName}`);
+            }
         }
-    }
+    };
+
+    const isViewed =
+        viewed ||
+        story?.viewers?.some(
+            viewer => viewer === userData?._id || viewer?._id === userData?._id
+        );
+    console.log(isViewed);
 
     return (
         <div
@@ -27,7 +60,14 @@ const StoryDp = ({ profileImage, userName, story }) => {
 
             <div
                 onClick={handleClick}
-                className={`p-[3px] rounded-full ${story ? " bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600" : ""} relative`}>
+                className={`p-[3px] rounded-full relative ${story
+                        ? isViewed
+                            ? "bg-gray-500"   // ✅ viewed
+                            : "bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600" // ❌ not viewed
+                        : ""
+                    }`}
+
+            >
                 <div className="w-[75px] h-[75px] rounded-full overflow-hidden border-2 border-black relative">
                     <img
                         src={profileImage || dp}

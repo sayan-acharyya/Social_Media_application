@@ -91,9 +91,14 @@ const FollowersModal = ({ open, setOpen, data = [], title }) => {
                                 </div>
                             </div>
 
-                            {userData?.userName !== user?.userName &&
-                                <FollowButton tailwind={'px-3 py-1 text-xs rounded-full bg-gradient-to-r from-pink-500 to-yellow-400 text-black font-semibold'} targetUserId={user?._id} />
-                            }
+                            <button
+                                onClick={() => {
+                                    navigate(`/profile/${user.userName}`);
+                                    setOpen(false);
+                                    setSearch("");
+                                }}
+
+                                className="bg-gradient-to-tr from-yellow-400 to-pink-500 transition active:scale-95 text-black font-semibold cursor-pointer px-3    rounded-full">View</button>
 
                         </div>
                     ))}

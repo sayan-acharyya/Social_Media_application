@@ -8,7 +8,7 @@ import { setCurrentUserStory } from '../redux/slices/storySlice';
 const getCurrentUser = () => {
     const dispatch = useDispatch();
 
-    const { storyData } = useSelector(state => state.story);
+    const { storyData, currentUserStory } = useSelector(state => state.story);
 
     useEffect(() => {
 

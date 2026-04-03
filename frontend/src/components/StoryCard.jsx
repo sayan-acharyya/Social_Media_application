@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import dp from "../assets/dp.webp"
 import { useSelector } from 'react-redux';
-import { MdOutlineKeyboardBackspace } from 'react-icons/md';
+import { MdOutlineKeyboardBackspace, MdOutlineRemoveRedEye } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import VideoPlayer from './VideoPlayer';
-import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { FaArrowUp } from "react-icons/fa6";
 
 const StoryCard = () => {
@@ -12,6 +11,7 @@ const StoryCard = () => {
   const { userData } = useSelector(state => state.user);
   const navigate = useNavigate();
   const [progress, setProgress] = useState(0);
+  const [showViewer, setShowViewer] = useState(false);
 
   const dummyUsers = [
     "https://i.pravatar.cc/100?img=1",
@@ -31,104 +31,155 @@ const StoryCard = () => {
         return prev + 1;
       })
     }, 150);
+
     return () => clearInterval(interval);
   }, [navigate]);
 
-
-
   return (
-    <div className='w-full  max-w-[500px] h-[100vh] border-x-2 border-gray-800 
-    pt-[10px] relative flex flex-col justify-center'>
-      <div className='flex items-center gap-[10px] absolute top-[25px] '>
-        <MdOutlineKeyboardBackspace className='text-white ml-2 cursor-pointer w-[25px] h-[25px] '
-          onClick={() => navigate(-1)}
-        />
-        <div className='w-[30px] h-[30px] md:w-[40px] md:h-[40px] border-2
-        border-black rounded-full cursor-pointer overflow-hidden'
-          onClick={() => navigate(`/profile/${storyData?.author?.userName}`)}
-        >
-          <img
-            src={storyData?.author?.profileImage || dp}
-            alt=""
-            className='w-full object-cover'
-          />
-        </div>
-        <div className='w-[120px] font-semibold truncate text-white'>
-          {storyData?.author?.userName}
-        </div>
-      </div>
+    <div className='w-full max-w-[500px] h-[100vh] mx-auto bg-black relative overflow-hidden'>
 
-      {/* media */}
-
-      <div className="w-full   bg-black">
-        {storyData.mediaType === "image" && (
-          <img
-            src={storyData.media}
-            alt="post"
-            className="w-full max-h-[500px] object-cover"
-          />
-        )}
-
-        {storyData.mediaType === "video" && (
-
-          <VideoPlayer media={storyData.media} />
-        )}
-      </div>
-
-
-      {/* progress bar  */}
-      <div className='absolute  top-2   w-full h-[5px] bg-gray-900'>
+      {/* progress */}
+      <div className='absolute top-2 left-2 right-2 h-[4px] bg-white/20 rounded-full z-20'>
         <div
           style={{ width: `${progress}%` }}
-          className='w-[200px] h-full bg-white transition-all 
-                duration-200 ease-linear'>
-
-        </div>
+          className='h-full bg-white rounded-full transition-all duration-200'
+        />
       </div>
 
-      {/* view story */}
-      {storyData?.author?.userName === userData?.userName && (
+      {/* header */}
+      <div className='absolute top-5 left-3 right-3 flex items-center justify-between z-20'>
 
-        <div className="absolute bottom-0 left-0 w-full px-4 pb-4">
+        <div className='flex items-center gap-3'>
+          <MdOutlineKeyboardBackspace
+            className='text-white cursor-pointer w-6 h-6'
+            onClick={() => navigate(-1)}
+          />
 
-          <div className="flex justify-between items-center 
-    bg-white/10 backdrop-blur-md border border-white/10 
-    rounded-2xl px-4 py-3">
+          <div
+            onClick={() => navigate(`/profile/${storyData?.author?.userName}`)}
+            className='w-9 h-9 rounded-full overflow-hidden border border-white/30'
+          >
+            <img src={storyData?.author?.profileImage || dp} className='w-full h-full object-cover' />
+          </div>
 
-            {/* 👁 Viewers */}
-            <div className="flex items-center gap-2 text-white">
-              <span className="text-lg text-white"><MdOutlineRemoveRedEye /></span>
-              <span className="text-sm font-medium">
-                {storyData?.viewers?.length || 0}
-              </span>
-              <span className="text-xs text-gray-300">views</span>
-              <div className="flex -space-x-3">
-                {dummyUsers.slice(1, 4).map((img, i) => (
-                  <img
-                    key={i}
-                    src={img}
-                    alt=""
-                    className="w-7 h-7 rounded-full border-2 border-black object-cover"
-                  />
-                ))}
+          <span className='text-white text-sm font-semibold'>
+            {storyData?.author?.userName}
+          </span>
+        </div>
+
+      </div>
+
+      {/* MAIN CONTENT */}
+      {!showViewer && (
+        <>
+          {/* media */}
+          <div className="w-full h-full flex items-center justify-center">
+            {storyData?.mediaType === "image" && (
+              <img
+                src={storyData?.media}
+                className="w-full h-full object-cover"
+              />
+            )}
+
+            {storyData?.mediaType === "video" && (
+              <VideoPlayer media={storyData?.media} />
+            )}
+          </div>
+
+          {/* bottom bar */}
+          {storyData?.author?.userName === userData?.userName && (
+            <div className="absolute bottom-4 left-3 right-3 z-20">
+
+              <div className="flex justify-between items-center bg-black/40 backdrop-blur-lg px-4 py-3 rounded-full border border-white/10">
+
+                {/* views */}
+                <div className="flex items-center gap-2 text-white text-sm">
+                  <MdOutlineRemoveRedEye />
+                  <span>{storyData?.viewers?.length || 0}</span>
+
+                  <div className="flex -space-x-2 ml-2">
+                    {dummyUsers.slice(0, 3).map((img, i) => (
+                      <img
+                        key={i}
+                        src={img}
+                        className="w-6 h-6 rounded-full border border-black"
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* swipe */}
+                <div
+                  onClick={() => setShowViewer(true)}
+                  className="flex items-center gap-1 text-white/70 text-xs cursor-pointer"
+                >
+                  <FaArrowUp className="animate-bounce" />
+                  Swipe up
+                </div>
+
               </div>
+
+            </div>
+          )}
+        </>
+      )}
+
+      {/* VIEWERS PANEL */}
+      {showViewer && (
+        <div className="absolute bottom-0 left-0 w-full h-full bg-black/95 z-30 flex flex-col transition-all duration-300">
+
+          {/* drag handle */}
+          <div className="w-12 h-1 bg-gray-600 rounded-full mx-auto mt-2 mb-3"></div>
+
+          {/* top mini story */}
+          <div className="w-full h-[30%] px-4">
+            {storyData?.mediaType === "image" && (
+              <img
+                src={storyData?.media}
+                className="w-full h-full object-cover rounded-xl"
+              />
+            )}
+
+            {storyData?.mediaType === "video" && (
+              <VideoPlayer media={storyData?.media} />
+            )}
+          </div>
+
+          {/* viewers list */}
+          <div className="flex-1 overflow-y-auto no-scrollbar px-4 mt-4">
+            <div className="flex items-center gap-2 text-white mb-4">
+              <MdOutlineRemoveRedEye />
+              <span className="font-semibold">
+                {storyData?.viewers?.length || 0} Views
+              </span>
             </div>
 
-            {/* ⬆ Swipe Up */}
-            <div className="flex items-center gap-1 text-white/80 text-sm cursor-pointer hover:text-white transition">
-              <span className="text-sm animate-bounce "><FaArrowUp /></span>
-              <span>Swipe up</span>
+            <div className="space-y-3">
+              {storyData.viewers.map((viewer, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <img 
+                  onClick={()=>navigate(`/profile/${viewer?.userName}`)}
+                  src={viewer?.profileImage || dp} className="w-10 h-10 rounded-full cursor-pointer" />
+                  <span className="text-white text-sm">{viewer?.userName}</span>
+                </div>
+              ))}
             </div>
+          </div>
 
+          {/* close */}
+          <div
+            onClick={() => setShowViewer(false)}
+            className="text-center text-white py-4 border-t border-gray-800 cursor-pointer"
+          >
+            Close
           </div>
 
         </div>
       )}
+
+    
     </div>
   )
 }
 
 export default StoryCard;
-
-
-//3:22:00

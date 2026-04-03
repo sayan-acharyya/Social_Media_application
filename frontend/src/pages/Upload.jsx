@@ -171,7 +171,7 @@ const Upload = () => {
             setCaption("");
             setMediaType("");
             navigate("/");
-            // window.location.reload();
+            window.location.reload();
         } catch {
             toast.error("Upload failed");
         }
