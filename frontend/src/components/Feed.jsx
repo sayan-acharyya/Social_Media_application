@@ -14,6 +14,8 @@ import axios from "axios";
 const Feed = () => {
     const { postData } = useSelector(state => state.post);
     const { userData } = useSelector(state => state.user);
+    const { storyList, currentUserStory } = useSelector(state => state.story);
+
 
 
 
@@ -39,8 +41,17 @@ const Feed = () => {
                 <StoryDp
                     userName={"Your Story"}
                     profileImage={userData?.profileImage}
-                    story={userData?.story}
+                    story={currentUserStory}
                 />
+
+                {storyList?.map((story, index) => (
+                    <StoryDp
+                        key={index}
+                        userName={story.author.userName}
+                        profileImage={story.author.profileImage}
+                        story={story.author.story}
+                    />
+                ))}
 
             </div>
 

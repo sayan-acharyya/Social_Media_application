@@ -15,6 +15,8 @@ const StoryDp = ({ profileImage, userName, story }) => {
         }
         else if (story && userName === "Your Story") {
             navigate(`/story/${userData?.userName}`);
+        } else {
+            navigate(`/story/${userName}`);
         }
     }
 
@@ -54,5 +56,5 @@ export default StoryDp;
 
 
 
-//3:02:00
+
 

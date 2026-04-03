@@ -5,7 +5,7 @@ const storySlice = createSlice({
     initialState: {
         storyData: [],
         storyList: [],
-        currentUserStory:  []
+        currentUserStory: null
     },
     reducers: {
         setStoryData: (state, action) => {

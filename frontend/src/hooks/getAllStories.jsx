@@ -25,7 +25,7 @@ const getAllStories = () => {
         };
 
         fetchPost();
-    }, [userData]);
+    }, [userData, storyData]);
 };
 
 export default getAllStories;

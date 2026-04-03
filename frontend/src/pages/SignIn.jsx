@@ -35,10 +35,10 @@ const SignIn = () => {
     try {
       const res = await axios.post(`${serverUrl}/auth/signin`,
         { userName, password }, { withCredentials: true });
-      dispatch(setUserData(res.data))
+      dispatch(setUserData(res.data.user))
       toast.success(res.data.message || "Signin Successfully");
       navigate("/");
-      window.location.reload();
+       
       setLoading(false);
     } catch (error) {
       toast.error(
