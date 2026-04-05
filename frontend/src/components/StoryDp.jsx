@@ -13,12 +13,7 @@ const StoryDp = ({ profileImage, userName, story }) => {
     const { storyData, storyList } = useSelector(state => state.story);
     const [viewed, setViewed] = useState(false);
 
-
-
-
-
-
-
+ 
     const handleViewer = async () => {
         try {
             const result = await axios.get(`${serverUrl}/story/view/${story._id}`,

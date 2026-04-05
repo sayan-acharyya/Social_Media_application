@@ -3,6 +3,7 @@ import userSlice from "./slices/userSlice.js"
 import postSlice from "./slices/postSlice.js"
 import loopSlice from "./slices/loopSlice.js"
 import storySlice from "./slices/storySlice.js"
+import messageSlice from "./slices/messageSlice.js"
 
 export const store = configureStore({
     reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
         post: postSlice,
         loop: loopSlice,
         story: storySlice,
+        message: messageSlice
     }
 })

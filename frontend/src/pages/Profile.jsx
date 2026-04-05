@@ -14,6 +14,7 @@ import { MdVerified } from "react-icons/md";
 import FollowButton from '../components/FollowButton';
 import Post from '../components/Post';
 import FollowersModal from "../components/FollowersModal";
+import { setSelectedUser } from '../redux/slices/messageSlice';
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -284,6 +285,11 @@ const Profile = () => {
                         />
 
                         <button
+                            onClick={() => {
+                                localStorage.setItem("selectedUser", JSON.stringify(profileData));
+                                dispatch(setSelectedUser(profileData));
+                                navigate("/messageArea");
+                            }}
                             className='px-[10px] min-w-[150px] py-[5px] h-[40px] 
   bg-white border border-gray-300 
   rounded-2xl text-black 

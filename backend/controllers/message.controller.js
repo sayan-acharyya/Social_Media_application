@@ -94,7 +94,6 @@ export const getAllMessages = async (req, res) => {
     }
 };
 
-
 export const getPrevUserChats = async (req, res) => {
     try {
         const currentUserId = req.userId;
@@ -130,5 +129,4 @@ export const getPrevUserChats = async (req, res) => {
     }
 };
 
-
-//4:25:00            
+ 

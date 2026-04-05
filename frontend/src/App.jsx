@@ -20,6 +20,8 @@ import Loops from './pages/Loops.jsx';
 import getAllLoops from './hooks/getAllLoops.jsx';
 import Story from './pages/Story.jsx';
 import getAllStories from './hooks/getAllStories.jsx';
+import Messages from './pages/Messages.jsx';
+import MessageArea from './pages/MessageArea.jsx';
 
 
 export const serverUrl = "http://localhost:8000/api"
@@ -112,6 +114,24 @@ const App = () => {
           element={
             <PrivateRoute>
               <Story />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/messages"
+          element={
+            <PrivateRoute>
+              <Messages />
+            </PrivateRoute>
+          }
+        />
+
+         <Route
+          path="/messageArea"
+          element={
+            <PrivateRoute>
+              <MessageArea />
             </PrivateRoute>
           }
         />
