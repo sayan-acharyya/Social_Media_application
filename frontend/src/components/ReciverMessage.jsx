@@ -10,9 +10,10 @@ const ReciverMessage = ({ message }) => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [message.message, message.image]);
 
+
   return (
     <div
-      ref={scroll}
+      ref={scroll}   
       className='flex flex-col items-start w-full'>
 
       {/* MESSAGE BUBBLE */}

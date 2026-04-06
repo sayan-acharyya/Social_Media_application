@@ -7,7 +7,7 @@ import PublicRoute from './hooks/PublicRoute.jsx';
 import Home from './pages/Home.jsx';
 import PrivateRoute from './hooks/PrivateRoute.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 import { setUserData } from './redux/slices/userSlice.js';
 import getCurrentUser from './hooks/getCurrentUser.jsx';
@@ -22,7 +22,8 @@ import Story from './pages/Story.jsx';
 import getAllStories from './hooks/getAllStories.jsx';
 import Messages from './pages/Messages.jsx';
 import MessageArea from './pages/MessageArea.jsx';
-
+import { io } from "socket.io-client"
+import { setOnlineUsers, setSocket } from './redux/slices/socketSlice.js';
 
 export const serverUrl = "http://localhost:8000/api"
 
@@ -34,6 +35,29 @@ const App = () => {
   getAllLoops();
   getAllStories();
 
+  const { userData } = useSelector(state => state.user);
+  const { socket } = useSelector(state => state.socket);
+
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+    if (userData) {
+      const socketIo = io("http://localhost:8000", {
+        query: {
+          userId: userData._id
+        }
+      });
+
+      dispatch(setSocket(socketIo));
+
+      socketIo.on('getOnlineUsers', (users) => {
+        dispatch(setOnlineUsers(users));
+      });
+
+      return () => socketIo.close();
+    }
+  }, [userData]);  
 
   return (
     <>
@@ -127,7 +151,7 @@ const App = () => {
           }
         />
 
-         <Route
+        <Route
           path="/messageArea"
           element={
             <PrivateRoute>
@@ -155,4 +179,7 @@ const App = () => {
   )
 }
 
-export default App
+export default App;
+
+
+//6:07:51

@@ -9,10 +9,10 @@ import postRouter from "./routes/post.routes.js";
 import loopRouter from "./routes/loop.routes.js";
 import storyRouter from "./routes/story.routes.js";
 import messageRouter from "./routes/message.routes.js"
-
+import { server, io, app } from "./socket.js";
 dotenv.config();
 
-const app = express();
+
 const port = process.env.PORT || 5000;
 
 /* ---------------- MIDDLEWARES ---------------- */
@@ -46,6 +46,6 @@ app.use("/api/message", messageRouter);
 
 /* ---------------- SERVER ---------------- */
 
-app.listen(port, () => {
+server.listen(port, () => {
    console.log(`Server running on port ${port}`);
 });
