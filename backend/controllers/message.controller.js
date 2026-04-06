@@ -8,12 +8,7 @@ export const sendMessage = async (req, res) => {
         const receiverId = req.params.receiverId;
         const { message } = req.body;
 
-        if (!message) {
-            return res.status(400).json({
-                success: false,
-                message: "Message is required"
-            });
-        }
+        
 
         let image = null;
 
