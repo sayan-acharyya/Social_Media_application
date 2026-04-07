@@ -1,13 +1,18 @@
 import React from 'react'
 import { MdOutlineKeyboardBackspace } from 'react-icons/md'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import OnlineUser from '../components/onlineUser';
+import { setSelectedUser } from '../redux/slices/messageSlice';
+import dp from "../assets/dp.webp"
 
 const Messages = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { userData } = useSelector(state => state.user);
   const { onlineUsers } = useSelector(state => state.socket);
+  const { prevChatsUsers, selectedUser } = useSelector(state => state.message);
 
   return (
     <div className='w-full h-full flex flex-col bg-black gap-[20px] p-[10px] overflow-hidden'>
@@ -35,9 +40,66 @@ const Messages = () => {
         ))}
 
       </div>
-   
+
+      {/* PREVIOUS CHATS */}
+     <div className='w-full flex-1 overflow-y-auto flex flex-col gap-2 pr-1 no-scrollbar'>
+
+        {prevChatsUsers?.map((user) => (
+
+          <div
+            key={user._id}
+            onClick={() => {
+              dispatch(setSelectedUser(user))
+              navigate(`/messageArea`)
+            }}
+            className={`w-full flex items-center gap-3 p-3 rounded-xl 
+            hover:bg-[#121212] transition cursor-pointer
+            ${selectedUser?._id === user._id ? "bg-[#1a1a1a]" : ""}`}
+          >
+
+            {/* Profile Image */}
+            <div className='w-[50px] h-[50px] rounded-full overflow-hidden border border-gray-700'>
+              <img
+                src={user?.profileImage || dp }
+                alt=""
+                className='w-full h-full object-cover'
+              />
+            </div>
+
+            {/* User Info */}
+            <div className='flex flex-col flex-1'>
+
+              {/* Top Row */}
+              <div className='flex justify-between items-center'>
+                <span className='text-white font-semibold text-sm'>
+                  {user?.userName}
+                </span>
+
+                {/* Time (static for now) */}
+                 
+              </div>
+
+              {/* Last Message Preview */}
+              <span className='text-gray-400 text-xs truncate'>
+                Tap to start chatting...
+              </span>
+
+            </div>
+
+            {/* Online Indicator */}
+            {
+              onlineUsers?.includes(user._id) && (
+                <div className='w-[10px] h-[10px] bg-green-500 rounded-full'></div>
+              )
+            }
+
+          </div>
+
+        ))}
+
+      </div>
     </div>
   )
 }
 
-export default Messages
+export default Messages;

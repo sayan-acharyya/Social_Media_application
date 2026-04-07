@@ -4,7 +4,8 @@ const messageSlice = createSlice({
     name: "messageSlice",
     initialState: {
         selectedUser: JSON.parse(localStorage.getItem("selectedUser")) || null,
-        messages: []
+        messages: [],
+        prevChatsUsers: null
     },
 
     reducers: {
@@ -18,9 +19,12 @@ const messageSlice = createSlice({
             } else {
                 state.messages = action.payload;
             }
+        },
+        setPrevChatUsers: (state, action) => {
+            state.prevChatsUsers = action.payload;
         }
     }
 })
 
-export const { setSelectedUser, setMessages } = messageSlice.actions;
+export const { setSelectedUser, setMessages, setPrevChatUsers } = messageSlice.actions;
 export default messageSlice.reducer;

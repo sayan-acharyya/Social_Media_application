@@ -96,7 +96,7 @@ export const getPrevUserChats = async (req, res) => {
         const conversations = await Conversation.find({
             participants: currentUserId
         })
-            .populate("participants", "userName profileImage")
+            .populate("participants", "userName profileImage name")
             .sort({ updatedAt: -1 });
 
         const userMap = {};

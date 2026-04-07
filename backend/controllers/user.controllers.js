@@ -185,3 +185,12 @@ export const follow = async (req, res) => {
     }
 }
 
+export const followingList = async (req, res) => {
+    try {
+        const result = await User.findById(req.userId);
+        return res.status(200).json(result.following);
+    } catch (error) {
+        console.log(error);
+
+    }
+}

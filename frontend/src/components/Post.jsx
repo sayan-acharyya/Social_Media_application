@@ -259,9 +259,12 @@ const Post = ({ post }) => {
 
                 {
                     post.comments?.slice(0, 2).map((comment, index) => (
-                        <div key={index} className="flex items-start gap-2">
+                        <div
+                            onClick={() => navigate(`/profile/${comment?.author?.userName}`)}
+                            key={index} className="flex items-start gap-2">
 
                             <img
+
                                 src={comment.author?.profileImage || dp}
                                 className="w-[28px] h-[28px] rounded-full object-cover"
                             />

@@ -21,7 +21,7 @@ const getCurrentUser = () => {
                 );
 
                 dispatch(setUserData(res.data.user));
-                dispatch(setFollowing(res.data.user.following));
+                
                 dispatch(setCurrentUserStory(res.data.user.story))
             } catch (error) {
                 console.log(error);

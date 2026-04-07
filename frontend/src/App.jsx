@@ -24,6 +24,8 @@ import Messages from './pages/Messages.jsx';
 import MessageArea from './pages/MessageArea.jsx';
 import { io } from "socket.io-client"
 import { setOnlineUsers, setSocket } from './redux/slices/socketSlice.js';
+import getFollowingList from './hooks/getFollowingList.jsx';
+import getPrevChatUsers from './hooks/getPrevChatUsers.jsx';
 
 export const serverUrl = "http://localhost:8000/api"
 
@@ -34,6 +36,8 @@ const App = () => {
   useGetAllPosts();
   getAllLoops();
   getAllStories();
+  getFollowingList();
+  getPrevChatUsers();
 
   const { userData } = useSelector(state => state.user);
   const { socket } = useSelector(state => state.socket);
