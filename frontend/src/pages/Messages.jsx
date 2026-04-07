@@ -42,64 +42,75 @@ const Messages = () => {
       </div>
 
       {/* PREVIOUS CHATS */}
-     <div className='w-full flex-1 overflow-y-auto flex flex-col gap-2 pr-1 no-scrollbar'>
+       <div className='w-full flex-1 overflow-y-auto flex flex-col gap-2 pr-1 no-scrollbar'>
 
-        {prevChatsUsers?.map((user) => (
+  {prevChatsUsers?.map((user) => {
 
-          <div
-            key={user._id}
-            onClick={() => {
-              dispatch(setSelectedUser(user))
-              navigate(`/messageArea`)
-            }}
-            className={`w-full flex items-center gap-3 p-3 rounded-xl 
-            hover:bg-[#121212] transition cursor-pointer
-            ${selectedUser?._id === user._id ? "bg-[#1a1a1a]" : ""}`}
-          >
+    const isOnline = onlineUsers?.includes(user._id);
 
-            {/* Profile Image */}
-            <div className='w-[50px] h-[50px] rounded-full overflow-hidden border border-gray-700'>
-              <img
-                src={user?.profileImage || dp }
-                alt=""
-                className='w-full h-full object-cover'
-              />
-            </div>
+    return (
+      <div
+        key={user._id}
+        onClick={() => {
+          dispatch(setSelectedUser(user))
+          navigate(`/messageArea`)
+        }}
+        className={`w-full flex items-center gap-3 p-3 rounded-xl 
+        hover:bg-[#121212] transition cursor-pointer
+        ${selectedUser?._id === user._id ? "bg-[#1a1a1a]" : ""}`}
+      >
 
-            {/* User Info */}
-            <div className='flex flex-col flex-1'>
+        {/* Profile Image + Online Dot */}
+        <div className='relative'>
+          <div className='w-[50px] h-[50px] rounded-full overflow-hidden border border-gray-700'>
+            <img
+              src={user?.profileImage || dp}
+              alt=""
+              className='w-full h-full object-cover'
+            />
+          </div>
 
-              {/* Top Row */}
-              <div className='flex justify-between items-center'>
-                <span className='text-white font-semibold text-sm'>
-                  {user?.userName}
-                </span>
+          {/* 🔥 GREEN DOT (like Instagram) */}
+          {isOnline && (
+            <div className='absolute bottom-0 right-0 w-[12px] h-[12px] bg-green-500 rounded-full border-2 border-black'></div>
+          )}
+        </div>
 
-                {/* Time (static for now) */}
-                 
-              </div>
+        {/* User Info */}
+        <div className='flex flex-col flex-1'>
 
-              {/* Last Message Preview */}
-              <span className='text-gray-400 text-xs truncate'>
-                Tap to start chatting...
+          {/* Top Row */}
+          <div className='flex justify-between items-center'>
+
+            <span className='text-white font-semibold text-sm'>
+              {user?.userName}
+            </span>
+
+            {/* 🔥 ACTIVE TEXT */}
+            {isOnline && (
+              <span className='text-green-400 text-[11px] font-medium'>
+                Active now
               </span>
-
-            </div>
-
-            {/* Online Indicator */}
-            {
-              onlineUsers?.includes(user._id) && (
-                <div className='w-[10px] h-[10px] bg-green-500 rounded-full'></div>
-              )
-            }
+            )}
 
           </div>
 
-        ))}
+          {/* Last Message Preview */}
+          <span className='text-gray-400 text-xs truncate'>
+            Tap to start chatting...
+          </span>
+
+        </div>
 
       </div>
+    )
+  })}
+
+</div>
     </div>
   )
 }
 
 export default Messages;
+
+//6:38:00
