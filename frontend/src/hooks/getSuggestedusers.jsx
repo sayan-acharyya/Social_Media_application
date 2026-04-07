@@ -1,21 +1,19 @@
-
 import axios from 'axios';
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { serverUrl } from '../App';
 import { setSuggestedusers } from '../redux/slices/userSlice';
 
-
-const getSuggestedusers = () => {
+const useGetSuggestedUsers = () => {
     const dispatch = useDispatch();
     const { userData } = useSelector(state => state.user);
 
-
     useEffect(() => {
 
-        const fetchUser = async () => {
-            try {
+        if (!userData) return; // 🔥 WAIT until user loads
 
+        const fetchUsers = async () => {
+            try {
                 const res = await axios.get(
                     `${serverUrl}/user/suggestedusers`,
                     { withCredentials: true }
@@ -25,13 +23,12 @@ const getSuggestedusers = () => {
 
             } catch (error) {
                 console.log(error);
-
             }
         };
 
-        fetchUser();
+        fetchUsers();
 
-    }, [userData]);
+    }, [userData]); // ✅ now valid
 }
 
-export default getSuggestedusers;
+export default useGetSuggestedUsers;
