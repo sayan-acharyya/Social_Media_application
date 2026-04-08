@@ -28,6 +28,9 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
     const navigate = useNavigate();
     const { userData } = useSelector(state => state.user);
     const { loopData } = useSelector(state => state.loop);
+    const { socket } = useSelector(state => state.socket);
+
+
 
     const check = userData?._id === loop.author?._id;
 
@@ -163,6 +166,37 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
 
         return past.toLocaleDateString(); // fallback
     };
+
+    //likedLoop  commentedLoop
+    useEffect(() => {
+        if (!socket) return;
+
+        const handleLike = (updatedData) => {
+            const updatedLoops = loopData.map(p =>
+                p._id == updatedData.loopId
+                    ? { ...p, likes: updatedData.likes }
+                    : p
+            )
+            dispatch(setLoopData(updatedLoops))
+        };
+
+        const handleComment = (updatedData) => {
+            const updatedLoops = loopData.map(p =>
+                p._id == updatedData.loopId
+                    ? { ...p, comments: updatedData.comments }
+                    : p
+            )
+            dispatch(setLoopData(updatedLoops))
+        };
+
+        socket.on("likedLoop", handleLike);
+        socket.on("commentedLoop", handleComment);
+
+        return () => {
+            socket.off("likedLoop", handleLike);
+            socket.off("commentedLoop", handleComment);
+        };
+    }, [socket]); // ✅ ONLY socket
 
     return (
         <div

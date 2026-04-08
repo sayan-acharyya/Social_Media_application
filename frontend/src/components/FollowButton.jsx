@@ -97,8 +97,7 @@ const FollowButton = ({ targetUserId, tailwind }) => {
 
     const isFollowing = following.includes(targetUserId);
 
-    // 🔥 ADD THIS (force re-render)
-    const [, forceUpdate] = useState(0);
+    
 
     const handleFollow = async () => {
         try {
@@ -112,8 +111,7 @@ const FollowButton = ({ targetUserId, tailwind }) => {
             dispatch(setUserData(result.data.user));
             dispatch(setProfileData(result.data.profileUser));
 
-            // 🔥 ADD THIS (force re-render)
-            forceUpdate(prev => prev + 1);
+            
 
             // ✅ update profile followers count instantly
             let updatedFollowers;

@@ -1,6 +1,7 @@
 import uploadOnCloudinary from "../Config/cloudinary.js";
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
+import { io } from "../socket.js";
 
 // ✅ Upload Post
 export const uploadPost = async (req, res) => {
@@ -51,7 +52,7 @@ export const uploadPost = async (req, res) => {
         });
     }
 };
-    
+
 // ✅ Get All Posts (Feed)
 export const getAllPosts = async (req, res) => {
     try {
@@ -59,7 +60,7 @@ export const getAllPosts = async (req, res) => {
             .populate("author", "name userName profileImage")
             .populate("comments.author", "name userName profileImage") // ✅ ADD THIS
             .sort({ createdAt: -1 });
- 
+
         return res.status(200).json({
             success: true,
             message: "Posts fetched successfully",
@@ -73,7 +74,7 @@ export const getAllPosts = async (req, res) => {
         });
     }
 };
-  
+
 // ✅ Like / Unlike Post
 export const like = async (req, res) => {
     try {
@@ -99,9 +100,18 @@ export const like = async (req, res) => {
             post.likes.push(req.userId);
         }
 
+
         await post.save();
+
+
+
         await post.populate("author", "name userName profileImage");
         await post.populate("comments.author", "name userName profileImage");
+
+        io.emit("likedPost", {
+            postId: post._id,
+            likes: post.likes
+        })
 
         return res.status(200).json({
             success: true,
@@ -147,6 +157,12 @@ export const comment = async (req, res) => {
 
         await post.populate("author", "name userName profileImage");
         await post.populate("comments.author", "name userName profileImage");
+
+        io.emit("commentedPost", {
+            postId: post._id,
+            comments: post.comments
+        })
+
 
         return res.status(200).json({
             success: true,

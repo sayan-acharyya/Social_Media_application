@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import dp from "../assets/dp.webp"
 import { useDispatch, useSelector } from 'react-redux'
 import { GoHeart, GoHeartFill } from "react-icons/go";
@@ -18,6 +18,7 @@ const Post = ({ post }) => {
 
     const { userData } = useSelector(state => state.user);
     const { postData } = useSelector(state => state.post);
+    const { socket } = useSelector(state => state.socket);
 
 
     const check = userData?._id !== post.author?._id;
@@ -98,6 +99,27 @@ const Post = ({ post }) => {
 
         return past.toLocaleDateString(); // fallback
     };
+     
+    useEffect(() => {
+        socket?.on("likedPost", (updatedData) => {
+            const updatedPosts = postData.map(p => p._id == updatedData.postId ?
+                { ...p, likes: updatedData.likes } : p
+            )
+            dispatch(setPostData(updatedPosts))
+        })
+
+        socket?.on("commentedPost", (updatedData) => {
+            const updatedPosts = postData.map(p => p._id == updatedData.postId ?
+                { ...p, comments: updatedData.comments } : p
+            )
+            dispatch(setPostData(updatedPosts))
+        })
+
+        return () => {
+            socket?.off("likedPost")
+            socket?.off("commentedPost")
+        }
+    }, [socket, postData, dispatch])
 
     return (
         <div className='w-[90%] max-w-[500px] bg-white 
