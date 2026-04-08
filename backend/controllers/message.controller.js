@@ -1,6 +1,7 @@
 import uploadOnCloudinary from "../Config/cloudinary.js";
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+import { getSocketId, io } from "../socket.js";
 
 export const sendMessage = async (req, res) => {
     try {
@@ -8,7 +9,7 @@ export const sendMessage = async (req, res) => {
         const receiverId = req.params.receiverId;
         const { message } = req.body;
 
-        
+
 
         let image = null;
 
@@ -43,6 +44,11 @@ export const sendMessage = async (req, res) => {
             conversation.messages.push(newMessage._id);
             await conversation.save();
         }
+        const receiverSocketId = getSocketId(receiverId);
+        if (receiverSocketId) {
+            io.to(receiverSocketId).emit("newMessage", newMessage)
+        }
+
 
         return res.status(200).json({
             success: true,
@@ -124,4 +130,3 @@ export const getPrevUserChats = async (req, res) => {
     }
 };
 
- 
