@@ -201,7 +201,6 @@ const LoopsCard = ({ loop, isMute, setIsMute }) => {
     return (
         <div
 
-
             className='
             w-full max-w-[480px] h-screen flex items-center justify-center mx-auto
             border-b-2 border-gray-800

@@ -16,8 +16,8 @@ const Nav = () => {
 
             {/* Home */}
             <Link
-            to={"/"}
-            className="relative group cursor-pointer">
+                to={"/"}
+                className="relative group cursor-pointer">
                 <GoHomeFill className='text-white w-[26px] h-[26px]' />
                 <span className="absolute bottom-[45px] left-1/2 -translate-x-1/2 
                 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 
@@ -27,14 +27,16 @@ const Nav = () => {
             </Link>
 
             {/* Search */}
-            <div className="relative group cursor-pointer">
+            <Link
+                to={"/search"}
+                className="relative group cursor-pointer">
                 <IoSearchOutline className='text-white w-[26px] h-[26px]' />
                 <span className="absolute bottom-[45px] left-1/2 -translate-x-1/2 
                 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 
                 group-hover:opacity-100 transition">
                     Search
                 </span>
-            </div>
+            </Link>
 
             {/* Post */}
             <Link to={"/upload"} className="relative group cursor-pointer">

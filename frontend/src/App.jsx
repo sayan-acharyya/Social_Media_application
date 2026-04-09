@@ -26,6 +26,7 @@ import { io } from "socket.io-client"
 import { setOnlineUsers, setSocket } from './redux/slices/socketSlice.js';
 import getFollowingList from './hooks/getFollowingList.jsx';
 import getPrevChatUsers from './hooks/getPrevChatUsers.jsx';
+import Search from './pages/Search.jsx';
 
 export const serverUrl = "http://localhost:8000/api"
 
@@ -61,7 +62,7 @@ const App = () => {
 
       return () => socketIo.close();
     }
-  }, [userData]);  
+  }, [userData]);
 
   return (
     <>
@@ -160,6 +161,15 @@ const App = () => {
           element={
             <PrivateRoute>
               <MessageArea />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/search"
+          element={
+            <PrivateRoute>
+              <Search />
             </PrivateRoute>
           }
         />

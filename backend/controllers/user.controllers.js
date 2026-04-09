@@ -194,3 +194,32 @@ export const followingList = async (req, res) => {
 
     }
 }
+
+export const search = async (req, res) => {
+    try {
+        const keyword = req.query.keyword;
+
+        if (!keyword) {
+            return res.status(400).json({
+                success: false,
+                message: "keyword is required"
+            })
+        }
+
+        const users = await User.find({
+            $or: [
+                { userName: { $regex: keyword, $options: "i" } },
+                { name: { $regex: keyword, $options: "i" } },
+            ]
+        }).select("-password")
+
+
+        return res.status(200).json({
+            success: true,
+            users
+        })
+
+    } catch (error) {
+        console.log(`error in search ${error}`);
+    }
+}
