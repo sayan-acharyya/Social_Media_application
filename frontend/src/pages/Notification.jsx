@@ -48,6 +48,20 @@ const Notification = () => {
         }
     };
 
+    const formatTime = (date) => {
+        const now = new Date();
+        const past = new Date(date);
+
+        const diff = Math.floor((now - past) / 1000); // seconds
+
+        if (diff < 60) return `${diff}s ago`;
+        if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+        if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+        if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
+
+        return past.toLocaleDateString(); // fallback
+    };
+
     return (
         <div className='w-full h-screen bg-black flex flex-col text-white'>
 
@@ -96,10 +110,17 @@ const Notification = () => {
                                             </span>{" "}
                                             <span className='text-gray-300'>{item.message}</span>
                                         </span>
-                                        <span className='text-xs text-blue-400 mt-1 font-medium'>
-                                            {item.type === "like" && "❤️ Liked your post"}
-                                            {item.type === "comment" && "💬 Commented on your loop"}
-                                        </span>
+                                        <div className='flex items-center gap-2 mt-1'>
+                                            <span className='text-xs text-blue-400 font-medium'>
+                                                {item.type === "like" && "❤️ Liked your post"}
+                                                {item.type === "comment" && "💬 Commented on your loop"}
+                                            </span>
+
+                                            {/* 🔥 TIME */}
+                                            <span className='text-xs text-gray-500'>
+                                                • {formatTime(item.createdAt)}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -114,7 +135,7 @@ const Notification = () => {
                             </div>
 
                             {/* BOTTOM SIDE: Individual Action Button */}
-                          <div className='flex justify-end border-t border-gray-800 pt-3 mt-1 gap-2'>
+                            <div className='flex justify-end border-t border-gray-800 pt-3 mt-1 gap-2'>
 
                                 {/* Mark as read */}
                                 {!item.isRead && (
@@ -122,7 +143,7 @@ const Notification = () => {
                                         onClick={() => handleMarkAsRead(item._id)}
                                         className='text-xs font-semibold py-1.5 px-4 rounded-full bg-white text-black hover:bg-gray-200 transition-all active:scale-95'
                                     >
-                                        Mark as read     
+                                        Mark as read
                                     </button>
                                 )}
 

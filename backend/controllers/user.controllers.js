@@ -247,7 +247,7 @@ export const getAllNotifications = async (req, res) => {
     try {
         const notifications = await Notification.find({
             receiver: req.userId
-        }).populate("sender receiver post loop")
+        }).populate("sender receiver post loop").sort({ createdAt: -1 });
 
         return res.status(200).json({
             success: true,
