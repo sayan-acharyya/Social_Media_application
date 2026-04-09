@@ -3,8 +3,9 @@ import Loop from "../models/loop.model.js";
 import Notification from "../models/notification.model.js";
 import User from "../models/user.model.js";
 import { io } from "../socket.js";
+import { getSocketId } from "../socket.js";
 
-// ✅ Upload Loop
+ 
 export const uploadLoop = async (req, res) => {
     try {
         const { caption } = req.body;
@@ -53,7 +54,6 @@ export const uploadLoop = async (req, res) => {
     }
 };
 
-// ✅ Like / Unlike Loop
 export const like = async (req, res) => {
     try {
         const { loopId } = req.params;
@@ -66,45 +66,52 @@ export const like = async (req, res) => {
             });
         }
 
+        const userId = req.userId.toString();
+
         const alreadyLiked = loop.likes.some(
-            id => id.toString() === req.userId.toString()
+            id => id.toString() === userId
         );
 
         if (alreadyLiked) {
+            // 🔴 Unlike
             loop.likes = loop.likes.filter(
-                id => id.toString() !== req.userId.toString()
+                id => id.toString() !== userId
             );
         } else {
-            loop.likes.push(req.userId);
+            // 🟢 Like
+            loop.likes.push(userId);
 
-            if (loop.author._id != req.userId) {
+            // ✅ FIXED (no _id issue)
+            if (loop.author.toString() !== userId) {
                 const notification = await Notification.create({
-                    sender: req.userId,
-                    receiver: loop.author._id,
+                    sender: userId,
+                    receiver: loop.author,
                     type: "like",
                     loop: loop._id,
                     message: "Liked your Loop"
-                })
+                });
 
-                const populatedNotification = await Notification.findById(notification._id).
-                    populate("sender receiver loop")
+                const populatedNotification = await Notification.findById(notification._id)
+                    .populate("sender receiver loop");
 
-                const receiverSocketId = getSocketId(loop.author._id)
+                const receiverSocketId = getSocketId(loop.author.toString());
+
                 if (receiverSocketId) {
-                    io.to(receiverSocketId).emit("newNotification", populatedNotification)
+                    io.to(receiverSocketId).emit("newNotification", populatedNotification);
                 }
             }
         }
 
         await loop.save();
+
         await loop.populate("author", "name userName profileImage");
         await loop.populate("comments.author", "name userName profileImage");
 
+        // 🔥 Real-time update
         io.emit("likedLoop", {
             loopId: loop._id,
             likes: loop.likes
-        })
-
+        });
 
         return res.status(200).json({
             success: true,
@@ -113,6 +120,7 @@ export const like = async (req, res) => {
         });
 
     } catch (error) {
+        console.error("LIKE LOOP ERROR:", error); // ✅ IMPORTANT
         return res.status(500).json({
             success: false,
             message: "Something went wrong while liking loop"
@@ -120,7 +128,6 @@ export const like = async (req, res) => {
     }
 };
 
-// ✅ Comment on Loop
 export const comment = async (req, res) => {
     try {
         const { message } = req.body;
@@ -133,7 +140,7 @@ export const comment = async (req, res) => {
             });
         }
 
-        const loop = await Loop.findById(loopId); // ✅ FIXED
+        const loop = await Loop.findById(loopId);
         if (!loop) {
             return res.status(404).json({
                 success: false,
@@ -141,26 +148,31 @@ export const comment = async (req, res) => {
             });
         }
 
+        const userId = req.userId.toString();
+
+        // 🟢 Add comment
         loop.comments.push({
-            author: req.userId,
+            author: userId,
             message
         });
 
-        if (loop.author._id != req.userId) {
+        // ✅ FIXED (no _id issue)
+        if (loop.author.toString() !== userId) {
             const notification = await Notification.create({
-                sender: req.userId,
-                receiver: loop.author._id,
+                sender: userId,
+                receiver: loop.author,
                 type: "comment",
                 loop: loop._id,
-                message: "commented on  your Loop"
-            })
+                message: "Commented on your Loop"
+            });
 
-            const populatedNotification = await Notification.findById(notification._id).
-                populate("sender receiver loop")
+            const populatedNotification = await Notification.findById(notification._id)
+                .populate("sender receiver loop");
 
-            const receiverSocketId = getSocketId(loop.author._id)
+            const receiverSocketId = getSocketId(loop.author.toString());
+
             if (receiverSocketId) {
-                io.to(receiverSocketId).emit("newNotification", populatedNotification)
+                io.to(receiverSocketId).emit("newNotification", populatedNotification);
             }
         }
 
@@ -169,10 +181,11 @@ export const comment = async (req, res) => {
         await loop.populate("author", "name userName profileImage");
         await loop.populate("comments.author", "name userName profileImage");
 
+        // 🔥 Real-time update
         io.emit("commentedLoop", {
             loopId: loop._id,
             comments: loop.comments
-        })
+        });
 
         return res.status(200).json({
             success: true,
@@ -181,6 +194,7 @@ export const comment = async (req, res) => {
         });
 
     } catch (error) {
+        console.error("COMMENT LOOP ERROR:", error); // ✅ IMPORTANT
         return res.status(500).json({
             success: false,
             message: "Something went wrong while commenting on loop"

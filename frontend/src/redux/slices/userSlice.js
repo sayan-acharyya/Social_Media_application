@@ -7,7 +7,8 @@ const userSlice = createSlice({
         suggestedUsers: null,
         profileData: null,
         following: [],
-        searchData: []
+        searchData: [],
+        notificationData: []
     },
     reducers: {
         setUserData: (state, action) => {
@@ -25,6 +26,9 @@ const userSlice = createSlice({
         setSearchData: (state, action) => {
             state.searchData = action.payload;
         },
+        setNotificationData: (state, action) => {
+            state.notificationData = action.payload;
+        },
         toggleFollow: (state, action) => {
             const targetUserId = action.payload;
             if (state.following.includes(targetUserId)) {
@@ -34,11 +38,24 @@ const userSlice = createSlice({
             }
 
         },
+        markAsReadLocal: (state, action) => {
+            const id = action.payload;
+            const notification = state.notificationData.find(n => n._id === id);
+            if (notification) {
+                notification.isRead = true;
+            }
+        },
+        deleteNotificationLocal: (state, action) => {
+            const id = action.payload;
+            state.notificationData = state.notificationData.filter(
+                n => n._id !== id
+            );
+        }
     }
 
 })
 
 
 
-export const { setUserData, setFollowing, toggleFollow, setSuggestedusers, setProfileData, setSearchData } = userSlice.actions;
+export const { setUserData, markAsReadLocal, deleteNotificationLocal, setFollowing, toggleFollow, setSuggestedusers, setProfileData, setSearchData, setNotificationData } = userSlice.actions;
 export default userSlice.reducer;

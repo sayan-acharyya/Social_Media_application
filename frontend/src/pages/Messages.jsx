@@ -42,7 +42,7 @@ const Messages = () => {
       </div>
 
       {/* PREVIOUS CHATS */}
-       <div className='w-full flex-1 overflow-y-auto flex flex-col gap-2 pr-1 no-scrollbar'>
+       <div className='w-full flex-1 overflow-y-auto no-scrollbar flex flex-col gap-2 pr-1 no-scrollbar'>
 
   {prevChatsUsers?.map((user) => {
 

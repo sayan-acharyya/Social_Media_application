@@ -20,7 +20,7 @@ import { BiMessageAltDetail } from "react-icons/bi";
 
 const Feed = () => {
     const { postData } = useSelector(state => state.post);
-    const { userData, suggestedUsers } = useSelector(state => state.user);
+    const { userData, suggestedUsers, notificationData } = useSelector(state => state.user);
     const { storyList, storyData } = useSelector(state => state.story);
 
 
@@ -136,14 +136,20 @@ const Feed = () => {
 
                 <div className="flex gap-4 items-center">
 
-                    <FiHeart className="text-white hover:text-pink-500 w-[24px] h-[24px] cursor-pointer transition" />
+                    {/* <FiHeart className="text-pink-500 w-[24px] h-[24px] cursor-pointer transition" /> */}
+                    <div className='relative cursor-pointer'>
+                        <FiHeart  onClick={()=>navigate("/notifications")} className='text-pink-500 w-[25px] h-[25px]' />
+                        {notificationData.length > 0 && notificationData.some((noti) => noti.isRead === false) && <div className='w-[9px] h-[9px] bg-blue-600 rounded-full absolute top-0 right-0'></div>}
+
+
+                    </div>
 
                     <LuSend
                         onClick={() => navigate("/messages")}
-                        className="text-white hover:text-blue-400 w-[24px] h-[24px] cursor-pointer transition"
+                        className="text-blue-400 w-[24px] h-[24px] cursor-pointer transition"
                     />
 
-                     
+
                     <div
                         onClick={() => setOpenSidebar(prev => !prev)}
                         className='ml-2 w-[40px] h-[40px] border-2 border-black rounded-full overflow-hidden'>

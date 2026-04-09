@@ -13,10 +13,11 @@ import { MdVerified } from 'react-icons/md';
 
 const LeftHome = () => {
 
-    const { userData, suggestedUsers } = useSelector(state => state.user);
+    const { userData, suggestedUsers, notificationData } = useSelector(state => state.user);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
 
     const handleLogout = async () => {
         try {
@@ -56,8 +57,12 @@ const LeftHome = () => {
                     src={logo}
                     alt=""
                 />
+                <div className='relative cursor-pointer'>
+                    <FiHeart onClick={()=>navigate("/notifications")} className='text-pink-500 w-[25px] h-[25px]' />
+                    {notificationData.length > 0 && notificationData.some((noti) => noti.isRead === false) &&
+                        <div className='w-[9px] h-[9px] bg-blue-600 rounded-full absolute top-0 right-0'></div>}
 
-                <FiHeart className='text-pink-500 w-[25px] h-[25px]' />
+                </div>
             </div>
 
             {/* Profile + Logout */}

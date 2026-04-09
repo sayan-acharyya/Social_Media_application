@@ -27,6 +27,8 @@ import { setOnlineUsers, setSocket } from './redux/slices/socketSlice.js';
 import getFollowingList from './hooks/getFollowingList.jsx';
 import getPrevChatUsers from './hooks/getPrevChatUsers.jsx';
 import Search from './pages/Search.jsx';
+import getAllNotification from './hooks/getAllNotification.jsx';
+import Notification from './pages/Notification.jsx';
 
 export const serverUrl = "http://localhost:8000/api"
 
@@ -39,6 +41,7 @@ const App = () => {
   getAllStories();
   getFollowingList();
   getPrevChatUsers();
+  getAllNotification();
 
   const { userData } = useSelector(state => state.user);
   const { socket } = useSelector(state => state.socket);
@@ -170,6 +173,15 @@ const App = () => {
           element={
             <PrivateRoute>
               <Search />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/notifications"
+          element={
+            <PrivateRoute>
+              <Notification />
             </PrivateRoute>
           }
         />

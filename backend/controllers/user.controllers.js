@@ -1,7 +1,7 @@
 import uploadOnCloudinary from "../Config/cloudinary.js";
 import Notification from "../models/notification.model.js";
 import User from "../models/user.model.js";
-import { io } from "../socket.js";
+import { getSocketId, io } from "../socket.js";
 
 
 export const getCurrentUser = async (req, res) => {
@@ -272,8 +272,28 @@ export const markAsRead = async (req, res) => {
             success: true,
             message: "marked as true"
         })
-        
+
     } catch (error) {
         console.log(`error in markAsRead ${error}`);
     }
 }
+
+export const deleteNotification = async (req, res) => {
+    try {
+        const { notificationId } = req.params;
+
+        await Notification.findByIdAndDelete(notificationId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Notification deleted"
+        });
+
+    } catch (error) {
+        console.log("Error deleting notification:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Error deleting notification"
+        });
+    }
+};
