@@ -122,7 +122,7 @@ const Notification = () => {
                                         onClick={() => handleMarkAsRead(item._id)}
                                         className='text-xs font-semibold py-1.5 px-4 rounded-full bg-white text-black hover:bg-gray-200 transition-all active:scale-95'
                                     >
-                                        Mark as read
+                                        Mark as read     
                                     </button>
                                 )}
 
