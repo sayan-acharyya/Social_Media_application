@@ -30,7 +30,7 @@ import Search from './pages/Search.jsx';
 import getAllNotification from './hooks/getAllNotification.jsx';
 import Notification from './pages/Notification.jsx';
 
-export const serverUrl = "http://localhost:8000/api"
+export const serverUrl = "https://social-media-application-3.onrender.com/api"
 
 const App = () => {
 
@@ -51,7 +51,7 @@ const App = () => {
 
   useEffect(() => {
     if (userData) {
-      const socketIo = io("http://localhost:8000", {
+      const socketIo = io("https://social-media-application-3.onrender.com", {
         query: {
           userId: userData._id
         }

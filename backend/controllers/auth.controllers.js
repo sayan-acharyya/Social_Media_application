@@ -41,7 +41,7 @@ export const signUp = async (req, res) => {
             email,
             password: hashPassword
         });
- 
+
 
         return res.status(201).json({
             success: true,
@@ -94,8 +94,8 @@ export const signIn = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "Strict",
+            secure: true,          // 🔥 MUST be true
+            sameSite: "None",      // 🔥 MUST be None
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
@@ -121,8 +121,8 @@ export const signOut = async (req, res) => {
 
         res.clearCookie("token", {
             httpOnly: true,
-            secure: false,
-            sameSite: "Strict"
+            secure: true,
+            sameSite: "None"
         });
 
         return res.status(200).json({
